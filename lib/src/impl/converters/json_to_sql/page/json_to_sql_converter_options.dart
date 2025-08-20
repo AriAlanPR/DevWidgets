@@ -9,7 +9,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:highlight/languages/json.dart';
-import 'package:yaru_widgets/yaru_widgets.dart';
+import 'package:yaru/yaru.dart';
 
 const exampleJson = """[
   {
@@ -58,108 +58,123 @@ class _Fields extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    return YaruSection(headline: "fields".tr(), children: [
-      SizedBox(
-        height: MediaQuery.of(context).size.height / 2,
-        child: ListView.separated(
-            itemBuilder: (BuildContext context, int index) {
-              return Wrap(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(8.0),
-                    width: MediaQuery.of(context).size.width / 8,
-                    child: TextFormField(
-                      initialValue: fields[index].fieldName,
-                      onChanged: (value) {
-                        ref.read(fieldListProvider.notifier).setFieldName(
-                            fieldId: fields[index].fieldId, name: value);
-                      },
-                      decoration: InputDecoration(
-                          border: const UnderlineInputBorder(),
-                          labelText: "field_name".tr()),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(8.0),
-                    width: MediaQuery.of(context).size.width / 8,
-                    child: DropdownButtonFormField<DataType>(
-                        decoration: InputDecoration(
-                            labelText: 'data_type'.tr(),
-                            border: const UnderlineInputBorder()),
-                        value: fields[index].dataType,
-                        items: getDropdownMenuItems<DataType>(DataType.values),
-                        onChanged: (selected) {
-                          ref.read(fieldListProvider.notifier).setDataType(
-                              fieldId: fields[index].fieldId,
-                              dataType: selected!);
-                        }),
-                  ),
-                  Visibility(
-                    maintainAnimation: true,
-                    maintainState: true,
-                    maintainSize: true,
-                    visible: fields[index].dataType.hasLength,
-                    child: Container(
-                      padding: const EdgeInsets.all(8.0),
-                      width: MediaQuery.of(context).size.width / 12,
-                      child: TextFormField(
-                        initialValue: fields[index].length?.toString(),
-                        onChanged: (value) {
-                          ref.read(fieldListProvider.notifier).setFieldLength(
-                              fieldId: fields[index].fieldId,
-                              length: int.tryParse(value));
-                        },
-                        decoration: InputDecoration(
-                            border: const UnderlineInputBorder(),
-                            hintText: "MAX",
-                            labelText: "length".tr()),
+    return YaruSection(
+      headline: Text("fields".tr()),
+      child: Column(
+        children: [
+          SizedBox(
+            height: MediaQuery.of(context).size.height / 2,
+            child: ListView.separated(
+                itemBuilder: (BuildContext context, int index) {
+                  return Wrap(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(8.0),
+                        width: MediaQuery.of(context).size.width / 8,
+                        child: TextFormField(
+                          initialValue: fields[index].fieldName,
+                          onChanged: (value) {
+                            ref.read(fieldListProvider.notifier).setFieldName(
+                                fieldId: fields[index].fieldId, name: value);
+                          },
+                          decoration: InputDecoration(
+                              border: const UnderlineInputBorder(),
+                              labelText: "field_name".tr()),
+                        ),
                       ),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(8.0),
-                    width: MediaQuery.of(context).size.width / 8,
-                    child: CheckboxListTile(
-                        value: fields[index].enabled,
-                        onChanged: (value) {
-                          ref.read(fieldListProvider.notifier).setFieldEnabled(
-                              fieldId: fields[index].fieldId, enabled: value);
-                        },
-                        title: Text("enabled".tr())),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(8.0),
-                    width: MediaQuery.of(context).size.width / 8,
-                    child: CheckboxListTile(
-                        value: fields[index].required,
-                        onChanged: (value) {
-                          ref.read(fieldListProvider.notifier).setFieldRequired(
-                              fieldId: fields[index].fieldId, required: value);
-                        },
-                        title: Text("required".tr())),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(8.0),
-                    width: MediaQuery.of(context).size.width / 8,
-                    child: CheckboxListTile(
-                        value: fields[index].primaryKey,
-                        onChanged: (value) {
-                          ref
-                              .read(fieldListProvider.notifier)
-                              .setFieldPrimaryKey(
-                                  fieldId: fields[index].fieldId,
-                                  primaryKey: value);
-                        },
-                        title: Text("primary_key".tr())),
-                  ),
-                ],
-              );
-            },
-            separatorBuilder: (BuildContext context, int index) =>
-                const Divider(),
-            itemCount: fields.length),
+                      Container(
+                        padding: const EdgeInsets.all(8.0),
+                        width: MediaQuery.of(context).size.width / 8,
+                        child: DropdownButtonFormField<DataType>(
+                          decoration: InputDecoration(
+                              labelText: 'data_type'.tr(),
+                              border: const UnderlineInputBorder()),
+                          value: fields[index].dataType,
+                          items:
+                              getDropdownMenuItems<DataType>(DataType.values),
+                          onChanged: (selected) {
+                            ref.read(fieldListProvider.notifier).setDataType(
+                                fieldId: fields[index].fieldId,
+                                dataType: selected!);
+                          },
+                        ),
+                      ),
+                      Visibility(
+                        maintainAnimation: true,
+                        maintainState: true,
+                        maintainSize: true,
+                        visible: fields[index].dataType.hasLength,
+                        child: Container(
+                          padding: const EdgeInsets.all(8.0),
+                          width: MediaQuery.of(context).size.width / 12,
+                          child: TextFormField(
+                            initialValue: fields[index].length?.toString(),
+                            onChanged: (value) {
+                              ref
+                                  .read(fieldListProvider.notifier)
+                                  .setFieldLength(
+                                      fieldId: fields[index].fieldId,
+                                      length: int.tryParse(value));
+                            },
+                            decoration: InputDecoration(
+                                border: const UnderlineInputBorder(),
+                                hintText: "MAX",
+                                labelText: "length".tr()),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(8.0),
+                        width: MediaQuery.of(context).size.width / 8,
+                        child: CheckboxListTile(
+                            value: fields[index].enabled,
+                            onChanged: (value) {
+                              ref
+                                  .read(fieldListProvider.notifier)
+                                  .setFieldEnabled(
+                                      fieldId: fields[index].fieldId,
+                                      enabled: value);
+                            },
+                            title: Text("enabled".tr())),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(8.0),
+                        width: MediaQuery.of(context).size.width / 8,
+                        child: CheckboxListTile(
+                            value: fields[index].required,
+                            onChanged: (value) {
+                              ref
+                                  .read(fieldListProvider.notifier)
+                                  .setFieldRequired(
+                                      fieldId: fields[index].fieldId,
+                                      required: value);
+                            },
+                            title: Text("required".tr())),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(8.0),
+                        width: MediaQuery.of(context).size.width / 8,
+                        child: CheckboxListTile(
+                            value: fields[index].primaryKey,
+                            onChanged: (value) {
+                              ref
+                                  .read(fieldListProvider.notifier)
+                                  .setFieldPrimaryKey(
+                                      fieldId: fields[index].fieldId,
+                                      primaryKey: value);
+                            },
+                            title: Text("primary_key".tr())),
+                      ),
+                    ],
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) =>
+                    const Divider(),
+                itemCount: fields.length),
+          ),
+        ],
       ),
-    ]);
+    );
   }
 }
 
@@ -168,163 +183,194 @@ class _Configuration extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    return YaruSection(headline: "configuration".tr(), children: [
-      YaruRow(
-          trailingWidget: Container(
-            padding: const EdgeInsets.all(8.0),
-            width: MediaQuery.of(context).size.width / 5,
-            child: ListTile(
-              title: TextFormField(
-                initialValue: ref.watch(tableNameProvider),
-                onChanged: (value) {
-                  ref.read(tableNameProvider.notifier).state = value;
-                },
-                decoration: InputDecoration(
-                    border: const UnderlineInputBorder(),
-                    labelText: "table_name".tr()),
-              ),
+    return YaruSection(
+      headline: Text("configuration".tr()),
+      child: Column(
+        children: [
+          YaruTile(
+            trailing: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  width: MediaQuery.of(context).size.width / 5,
+                  child: ListTile(
+                    title: TextFormField(
+                      initialValue: ref.watch(tableNameProvider),
+                      onChanged: (value) {
+                        ref.read(tableNameProvider.notifier).state = value;
+                      },
+                      decoration: InputDecoration(
+                          border: const UnderlineInputBorder(),
+                          labelText: "table_name".tr()),
+                    ),
+                  ),
+                ),
+                const SizedBox.shrink()
+              ],
             ),
+            enabled: true,
           ),
-          enabled: true,
-          actionWidget: const SizedBox.shrink()),
-      YaruRow(
-          trailingWidget: Row(children: [
-            Container(
-                padding: const EdgeInsets.all(8.0),
-                width: MediaQuery.of(context).size.width / 5,
-                child: CheckboxListTile(
-                  onChanged: (value) {
-                    ref.read(enableCreateTableProvider.notifier).state = value!;
-                  },
-                  title: const Text("CREATE TABLE"),
-                  value: ref.watch(enableCreateTableProvider),
-                )),
-            Visibility(
-              visible: ref.watch(enableCreateTableProvider),
-              child: Container(
-                  padding: const EdgeInsets.all(8.0),
+          YaruTile(
+            trailing: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   width: MediaQuery.of(context).size.width / 5,
                   child: CheckboxListTile(
                     onChanged: (value) {
-                      ref
-                          .read(enableCreateTableIfNotExistsProvider.notifier)
-                          .state = value!;
-                    },
-                    title: const Text("IF NOT EXISTS"),
-                    value: ref.watch(enableCreateTableIfNotExistsProvider),
-                  )),
-            ),
-          ]),
-          enabled: true,
-          actionWidget: const SizedBox.shrink()),
-      YaruRow(
-          trailingWidget: Row(children: [
-            Container(
-                padding: const EdgeInsets.all(8.0),
-                width: MediaQuery.of(context).size.width / 5,
-                child: CheckboxListTile(
-                  onChanged: (value) {
-                    ref.read(enableDropTableProvider.notifier).state = value!;
-                  },
-                  title: const Text("DROP TABLE"),
-                  value: ref.watch(enableDropTableProvider),
-                )),
-            Visibility(
-              visible: ref.watch(enableDropTableProvider),
-              child: Container(
-                  padding: const EdgeInsets.all(8.0),
-                  width: MediaQuery.of(context).size.width / 5,
-                  child: CheckboxListTile(
-                    onChanged: (value) {
-                      ref.read(enableDropTableIfExistsProvider.notifier).state =
+                      ref.read(enableCreateTableProvider.notifier).state =
                           value!;
                     },
-                    title: const Text("IF EXISTS"),
-                    value: ref.watch(enableDropTableIfExistsProvider),
-                  )),
+                    title: const Text("CREATE TABLE"),
+                    value: ref.watch(enableCreateTableProvider),
+                  ),
+                ),
+                Visibility(
+                  visible: ref.watch(enableCreateTableProvider),
+                  child: Container(
+                    padding: const EdgeInsets.all(8.0),
+                    width: MediaQuery.of(context).size.width / 5,
+                    child: CheckboxListTile(
+                      onChanged: (value) {
+                        ref
+                            .read(enableCreateTableIfNotExistsProvider.notifier)
+                            .state = value!;
+                      },
+                      title: const Text("IF NOT EXISTS"),
+                      value: ref.watch(enableCreateTableIfNotExistsProvider),
+                    ),
+                  ),
+                ),
+                const SizedBox.shrink(),
+              ],
             ),
-          ]),
-          enabled: true,
-          actionWidget: const SizedBox.shrink()),
-      YaruRow(
-          trailingWidget: Row(children: [
-            Container(
-                padding: const EdgeInsets.all(8.0),
-                width: MediaQuery.of(context).size.width / 5,
-                child: RadioListTile<ScriptType>(
-                  groupValue: ref.watch(scriptTypeProvider),
-                  onChanged: (value) {
-                    ref.read(scriptTypeProvider.notifier).state = value!;
-                  },
-                  title: const Text("INSERT"),
-                  value: ScriptType.insert,
-                  controlAffinity: ListTileControlAffinity.trailing,
-                )),
-            Visibility(
-              visible: ref
-                  .watch(fieldListProvider)
-                  .where((f) => f.primaryKey)
-                  .isNotEmpty,
-              child: Container(
-                  padding: const EdgeInsets.all(8.0),
+            enabled: true,
+          ),
+          YaruTile(
+            trailing: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  width: MediaQuery.of(context).size.width / 5,
+                  child: CheckboxListTile(
+                    onChanged: (value) {
+                      ref.read(enableDropTableProvider.notifier).state = value!;
+                    },
+                    title: const Text("DROP TABLE"),
+                    value: ref.watch(enableDropTableProvider),
+                  ),
+                ),
+                Visibility(
+                  visible: ref.watch(enableDropTableProvider),
+                  child: Container(
+                    padding: const EdgeInsets.all(8.0),
+                    width: MediaQuery.of(context).size.width / 5,
+                    child: CheckboxListTile(
+                      onChanged: (value) {
+                        ref
+                            .read(enableDropTableIfExistsProvider.notifier)
+                            .state = value!;
+                      },
+                      title: const Text("IF EXISTS"),
+                      value: ref.watch(enableDropTableIfExistsProvider),
+                    ),
+                  ),
+                ),
+                const SizedBox.shrink(),
+              ],
+            ),
+            enabled: true,
+          ),
+          YaruTile(
+            trailing: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   width: MediaQuery.of(context).size.width / 5,
                   child: RadioListTile<ScriptType>(
                     groupValue: ref.watch(scriptTypeProvider),
                     onChanged: (value) {
                       ref.read(scriptTypeProvider.notifier).state = value!;
                     },
-                    title: const Text("UPDATE"),
-                    value: ScriptType.update,
+                    title: const Text("INSERT"),
+                    value: ScriptType.insert,
                     controlAffinity: ListTileControlAffinity.trailing,
-                  )),
+                  ),
+                ),
+                Visibility(
+                  visible: ref
+                      .watch(fieldListProvider)
+                      .where((f) => f.primaryKey)
+                      .isNotEmpty,
+                  child: Container(
+                    padding: const EdgeInsets.all(8.0),
+                    width: MediaQuery.of(context).size.width / 5,
+                    child: RadioListTile<ScriptType>(
+                      groupValue: ref.watch(scriptTypeProvider),
+                      onChanged: (value) {
+                        ref.read(scriptTypeProvider.notifier).state = value!;
+                      },
+                      title: const Text("UPDATE"),
+                      value: ScriptType.update,
+                      controlAffinity: ListTileControlAffinity.trailing,
+                    ),
+                  ),
+                ),
+                Visibility(
+                  visible: ref
+                      .watch(fieldListProvider)
+                      .where((f) => f.primaryKey)
+                      .isNotEmpty,
+                  child: Container(
+                      padding: const EdgeInsets.all(8.0),
+                      width: MediaQuery.of(context).size.width / 5,
+                      child: RadioListTile<ScriptType>(
+                        value: ScriptType.delete,
+                        onChanged: (value) {
+                          ref.read(scriptTypeProvider.notifier).state = value!;
+                        },
+                        title: const Text("DELETE"),
+                        controlAffinity: ListTileControlAffinity.trailing,
+                        groupValue: ref.watch(scriptTypeProvider),
+                      )),
+                ),
+                const SizedBox.shrink(),
+              ],
             ),
-            Visibility(
-              visible: ref
-                  .watch(fieldListProvider)
-                  .where((f) => f.primaryKey)
-                  .isNotEmpty,
-              child: Container(
-                  padding: const EdgeInsets.all(8.0),
-                  width: MediaQuery.of(context).size.width / 5,
-                  child: RadioListTile<ScriptType>(
-                    value: ScriptType.delete,
-                    onChanged: (value) {
-                      ref.read(scriptTypeProvider.notifier).state = value!;
-                    },
-                    title: const Text("DELETE"),
-                    controlAffinity: ListTileControlAffinity.trailing,
-                    groupValue: ref.watch(scriptTypeProvider),
-                  )),
-            ),
-          ]),
-          enabled: true,
-          actionWidget: const SizedBox.shrink()),
-    ]);
+            enabled: true,
+          ),
+        ],
+      ),
+    );
   }
 }
 
 Widget _buildInvalidJsonData(BuildContext context) {
   return Center(
-      child: YaruSection(
-    children: [
-      SizedBox(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height / 2,
-        child: CodeEditorWrapper(
-          usesCodeControllers: true,
-          textEditingController:
-              CodeController(language: json, text: exampleJson),
-          readOnly: true,
-        ),
+    child: YaruSection(
+      child: Column(
+        children: [
+          SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height / 2,
+            child: CodeEditorWrapper(
+              usesCodeControllers: true,
+              textEditingController:
+                  CodeController(language: json, text: exampleJson),
+              readOnly: true,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: Text(
+                "json_to_sql_invalid_json_data".tr(),
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+            ),
+          ),
+        ],
       ),
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Center(
-            child: Text(
-          "json_to_sql_invalid_json_data".tr(),
-          style: Theme.of(context).textTheme.bodyLarge,
-        )),
-      )
-    ],
-  ));
+    ),
+  );
 }

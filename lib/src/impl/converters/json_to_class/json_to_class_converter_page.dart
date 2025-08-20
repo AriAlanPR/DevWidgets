@@ -9,7 +9,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:highlight/languages/dart.dart';
 import 'package:highlight/languages/json.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:yaru_widgets/yaru_widgets.dart';
+import 'package:yaru/yaru.dart';
 
 class JsonToClassConverterPage extends HookConsumerWidget {
   const JsonToClassConverterPage({super.key});
@@ -39,67 +39,89 @@ class JsonToClassConverterPage extends HookConsumerWidget {
     return SizedBox(
       height: MediaQuery.of(context).size.height - kToolbarHeight,
       child: ListView(
+        physics: const ClampingScrollPhysics(),
+        primary: false,
+        shrinkWrap: true,
         children: [
           Container(
             margin: const EdgeInsets.all(8.0),
-            child: YaruSection(headline: "configuration".tr(), children: [
-              YaruRow(
-                enabled: true,
-                leadingWidget: const Icon(
-                  Icons.title,
-                  size: 25,
-                ),
-                trailingWidget: Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: Text(
-                    "class_name".tr(),
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                ),
-                actionWidget: SizedBox(
-                  width: MediaQuery.of(context).size.width / 10,
-                  child: TextFormField(
-                    textAlign: TextAlign.end,
-                    initialValue: ref.read(classNameProvider),
-                    onChanged: (value) {
-                      ref.read(classNameProvider.notifier).state = value;
-                    },
-                    decoration: const InputDecoration(
-                      contentPadding: EdgeInsets.all(10),
-                      border: OutlineInputBorder(),
+            child: YaruSection(
+              headline: Text("configuration".tr()),
+              child: Column(
+                children: [
+                  YaruTile(
+                    enabled: true,
+                    leading: const Icon(
+                      Icons.title,
+                      size: 25,
+                    ),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Text(
+                            "class_name".tr(),
+                            style: const TextStyle(fontSize: 18),
+                          ),
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width / 10,
+                          child: TextFormField(
+                            textAlign: TextAlign.end,
+                            initialValue: ref.read(classNameProvider),
+                            onChanged: (value) {
+                              ref.read(classNameProvider.notifier).state =
+                                  value;
+                            },
+                            decoration: const InputDecoration(
+                              contentPadding: EdgeInsets.all(10),
+                              border: OutlineInputBorder(),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ),
-              ),
-              YaruRow(
-                enabled: true,
-                leadingWidget: const Icon(
-                  Icons.code,
-                  size: 25,
-                ),
-                trailingWidget: Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: Text(
-                    StringTranslateExtension("programming_language").tr(),
-                    style: const TextStyle(fontSize: 18),
+                  YaruTile(
+                    enabled: true,
+                    leading: const Icon(
+                      Icons.code,
+                      size: 25,
+                    ),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Text(
+                            StringTranslateExtension("programming_language")
+                                .tr(),
+                            style: const TextStyle(fontSize: 18),
+                          ),
+                        ),
+                        DropdownButton<ProgrammingLanguage>(
+                            value: ref.watch(programmingLanguageProvider),
+                            items: getDropdownMenuItems<ProgrammingLanguage>(
+                                ProgrammingLanguage.values),
+                            onChanged: (selected) => ref
+                                .read(programmingLanguageProvider.notifier)
+                                .state = selected!),
+                      ],
+                    ),
                   ),
-                ),
-                actionWidget: DropdownButton<ProgrammingLanguage>(
-                    value: ref.watch(programmingLanguageProvider),
-                    items: getDropdownMenuItems<ProgrammingLanguage>(
-                        ProgrammingLanguage.values),
-                    onChanged: (selected) => ref
-                        .read(programmingLanguageProvider.notifier)
-                        .state = selected!),
+                ],
               ),
-            ]),
+            ),
           ),
-          SizedBox(
-              height: MediaQuery.of(context).size.height / 1.2,
-              child: IOEditor(
-                inputController: inputController,
-                outputController: outputController,
-              )),
+          IOEditor(
+            inputController: inputController,
+            outputController: outputController,
+            singleScroll: true,
+            useExpansionPanels: true,
+            inputInitiallyExpanded: true,
+            outputInitiallyExpanded: true,
+          ),
         ],
       ),
     );

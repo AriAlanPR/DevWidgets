@@ -5,7 +5,7 @@ import 'package:dev_widgets/src/impl/settings/settings_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:yaru_widgets/yaru_widgets.dart';
+import 'package:yaru/yaru.dart';
 
 class HomeCard extends StatelessWidget {
   final isFavoriteVisibleProvider = StateProvider<bool>((ref) => false);

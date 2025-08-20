@@ -33,7 +33,7 @@ class UuidGenerator extends Notifier<String> {
     state = output;
   }
 
-  clear() {
+  void clear() {
     state = "";
   }
 }

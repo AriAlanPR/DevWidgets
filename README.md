@@ -1,68 +1,118 @@
-<p align="center">
-<img width=15% src="assets/icon/icon.svg"/>
-</p>
-<h2 align="center">DevWidgets</h2>
-<p align="center">
-DevWidgets is a Flutter application with several tools such as generators, formatters and converters for developers.
-It's directly inspired by <a href="https://github.com/veler/DevToys">DevToys</a>.<br>
-<a href="https://gumbarros.github.io/DevWidgets">Clicking here</a> you can try it directly from your browser 🌐!
-</p>
-<p align="center">
-  <a href="https://github.com/Codelessly/ResponsiveFramework">
-    <img src="https://img.shields.io/badge/flutter-responsive-brightgreen.svg" alt="ResponsiveFramework">
-  </a>
-  <a href="https://github.com/gumbarros/DevWidgets/releases/tag/latest">
-    <img src="https://img.shields.io/badge/Download-22272e?logo=github" alt="Download">
-  </a>
-  <image src="https://user-images.githubusercontent.com/52143624/201690529-58c277d6-91f1-466a-b076-da680a0f2a9d.png" alt="DevWidgetsHome">
+# DevWidgets (Fork)
 
-</p>
+DevWidgets is a Flutter desktop/web app that bundles common developer tools: generators, converters, formatters, and encoders.
+This fork focuses on stability, UI fixes, and maintainability for desktop and web builds.
 
----
+- Website (original): https://gumbarros.github.io/DevWidgets
+- Upstream: https://github.com/gumbarros/DevWidgets
+  - Upstream README: https://github.com/gumbarros/DevWidgets/blob/main/README.md
+  - Original README in this repo: `legacydocs/README.md`
+
+## Features
+
+- Generators: UUID, Lorem Ipsum, CPF/CNPJ (BR), and more
+- Converters: JSON ↔ YAML, JSON → SQL, JSON → Class
+- Formatters: JSON, SQL, YAML, XML
+- Encoders: Base64, URL, HTML
+- Cross‑platform: Linux, macOS, Windows, Web
+
+## What’s new in this fork
+
+Stability and layout fixes to prevent constraint errors on desktop/web. Highlights:
+
+- Trailing UI on `YaruTile` is now sized intrinsically to avoid infinite width:
+  - Set `mainAxisSize: MainAxisSize.min` on trailing `Row`s (where applicable).
+  - Replaced `ListTile` inside trailing rows with a `Column(Text, Text)` to prevent unbounded expansion.
+  - Constrained wide widgets (e.g., color palette) with finite width containers.
+
+Updated files (round 1):
+
+- `lib/src/impl/text/text_escape/text_escape_page.dart`
+- `lib/src/impl/encoders/base64_text/base64_text_encoder_page.dart`
+- `lib/src/impl/encoders/html/html_encoder_page.dart`
+- `lib/src/impl/encoders/url/url_encoder_page.dart`
+- `lib/src/impl/settings/settings_page.dart` (primary color grid width; some trailing rows constrained)
+- `lib/src/impl/converters/json_yaml/json_yaml_converter_page.dart` (some trailing rows constrained)
+
+## Changelog
+
+See the full changelog in [`CHANGELOG.md`](CHANGELOG.md).
+
+Other changes:
+
+- Safer map detection in JSON→SQL helper: `_isMap(dynamic value)`.
+- Moved the original README to `legacydocs/README.md` for reference; license preserved in `LICENSE`.
 
 ## Getting Started
 
-### Download from Releases
+### Prerequisites
 
-You can download a nightly build for Linux from the latest commit
-from [here](https://github.com/gumbarros/DevWidgets/releases).
+- Flutter (stable channel recommended). Check: `flutter --version`
+- A recent Dart SDK is bundled with Flutter.
 
-### Building from source
-
-1. Clone the repo from GitHub
-
-```bash
-git clone https://github.com/gumbarros/DevWidgets
-```
-
-2. Install [Flutter](https://docs.flutter.dev/get-started/)
-3. Restore the dependencies
+### Install dependencies
 
 ```bash
 flutter pub get
 ```
-4. Build for your OS
+
+### Run (desktop)
+
 ```bash
-# Windows
-flutter build windows --release
-# Mac
-flutter build macos --release
+# macOS
+flutter run -d macos
+
 # Linux
-flutter build linux --release
+flutter run -d linux
+
+# Windows
+flutter run -d windows
 ```
----
+
+### Run (web)
+
+```bash
+flutter run -d chrome
+```
+
+## Build
+
+```bash
+# macOS app
+flutter build macos
+
+# Linux app
+flutter build linux
+
+# Windows app
+flutter build windows
+
+# Web (release)
+flutter build web
+```
+
+## Project structure
+
+- `lib/src/impl/` — Features by domain (text, encoders, converters, formatters, generators, settings)
+- `assets/` — Icons and translations
+- `web/` — PWA shell
+- `legacydocs/` — Original upstream README retained for reference
 
 ## Contributing
 
-Check [CONTRIBUTING.MD](https://github.com/gumbarros/DevWidgets/blob/main/CONTRIBUTING.md).
+Issues and PRs are welcome. Please:
 
----
+- Keep changes minimal and focused.
+- Add clear commit messages and short rationale for UI/layout changes.
+- Prefer fixes that maintain finite constraints for desktop/web.
 
-## Special Thanks
+## License
 
-### Code contributors
+This project remains under the upstream project’s license. See `LICENSE`.
+Credits to the original authors/maintainers of DevWidgets.
 
-<br>
-<a href="https://github.com/gumbarros/dev_widgets/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=gumbarros/devtoysflutter" />
-</a>
+## Acknowledgements
+
+- Upstream DevWidgets project and contributors
+- Yaru UI components
+- Riverpod, Hooks, Multi Split View, and other libraries used in this app

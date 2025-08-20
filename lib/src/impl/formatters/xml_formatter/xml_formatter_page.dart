@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:highlight/languages/xml.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:yaru_widgets/yaru_widgets.dart';
+import 'package:yaru/yaru.dart';
 
 class XmlFormatterPage extends HookConsumerWidget {
   const XmlFormatterPage({super.key});
@@ -46,27 +46,34 @@ class XmlFormatterPage extends HookConsumerWidget {
           Container(
             margin: const EdgeInsets.all(8.0),
             child: YaruSection(
-                headline: StringTranslateExtension("configuration").tr(),
+              headline: Text(StringTranslateExtension("configuration").tr()),
+              child: Column(
                 children: [
-                  YaruRow(
+                  YaruTile(
                     enabled: true,
-                    leadingWidget: const Icon(Icons.arrow_right_alt),
-                    trailingWidget: Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Text(
-                        "indentation".tr(),
-                        style: const TextStyle(fontSize: 18),
-                      ),
+                    leading: const Icon(Icons.arrow_right_alt),
+                    trailing: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Text(
+                            "indentation".tr(),
+                            style: const TextStyle(fontSize: 18),
+                          ),
+                        ),
+                        DropdownButton<Indentation>(
+                            value: ref.watch(indentationProvider),
+                            items: getDropdownMenuItems<Indentation>(
+                                Indentation.values),
+                            onChanged: (selected) => ref
+                                .read(indentationProvider.notifier)
+                                .state = selected!),
+                      ],
                     ),
-                    actionWidget: DropdownButton<Indentation>(
-                        value: ref.watch(indentationProvider),
-                        items: getDropdownMenuItems<Indentation>(
-                            Indentation.values),
-                        onChanged: (selected) => ref
-                            .read(indentationProvider.notifier)
-                            .state = selected!),
                   ),
-                ]),
+                ],
+              ),
+            ),
           ),
           SizedBox(
               height: MediaQuery.of(context).size.height / 1.2,

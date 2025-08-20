@@ -1,7 +1,7 @@
-String decodeUrl(content) {
+String decodeUrl(String content) {
   return Uri.decodeComponent(content);
 }
 
-String encodeUrl(content) {
+String encodeUrl(String content) {
   return Uri.encodeComponent(content);
 }

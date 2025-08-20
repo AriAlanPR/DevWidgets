@@ -27,7 +27,7 @@ class CpfCnpjGenerator extends Notifier<String> {
     state = output;
   }
 
-  clear() {
+  void clear() {
     state = "";
   }
 }

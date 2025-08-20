@@ -8,7 +8,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:yaru/yaru.dart';
-import 'package:yaru_widgets/yaru_widgets.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -37,97 +36,126 @@ class _ApplicationSettings extends ConsumerWidget {
 
     return Container(
       margin: const EdgeInsets.all(8.0),
-      child: YaruSection(headline: "application".tr(), children: [
-        YaruRow(
-          enabled: true,
-          padding: const EdgeInsets.all(8.0),
-          leadingWidget: const Icon(Icons.public),
-          trailingWidget: Text(
-            "language".tr(),
-            style: const TextStyle(fontSize: 18),
-          ),
-          actionWidget: DropdownButton<Locale>(
-              value: context.locale,
-              onChanged: (value) {
-                ref
-                    .read(settingsProvider.notifier)
-                    .setLocale(context, value ?? const Locale("en_US"));
-              },
-              items: _getLanguageDropdownMenuItems()),
-        ),
-        YaruRow(
-          enabled: true,
-          padding: const EdgeInsets.all(8.0),
-          leadingWidget: const Icon(Icons.dark_mode),
-          trailingWidget: Text(
-            "brightness".tr(),
-            style: const TextStyle(fontSize: 18),
-          ),
-          actionWidget: DropdownButton<ThemeMode>(
-              value: settings.themeMode,
-              items: [
-                DropdownMenuItem(
-                  value: ThemeMode.system,
-                  child: Text("system".tr()),
-                ),
-                DropdownMenuItem(
-                  value: ThemeMode.light,
-                  child: Text("light".tr()),
-                ),
-                DropdownMenuItem(
-                  value: ThemeMode.dark,
-                  child: Text("dark".tr()),
-                ),
-              ],
-              onChanged: (value) {
-                ref
-                    .read(settingsProvider.notifier)
-                    .setThemeMode(value ?? ThemeMode.system);
-              }),
-        ),
-        YaruRow(
-          enabled: true,
-          padding: const EdgeInsets.all(8.0),
-          leadingWidget: const Icon(Icons.accessibility),
-          trailingWidget: Text(
-            "high_contrast".tr(),
-            style: const TextStyle(fontSize: 18),
-          ),
-          actionWidget: Switch(
-            onChanged: (bool value) {
-              ref.read(settingsProvider.notifier).setHighContrast(value);
-            },
-            value: settings.highContrast,
-          ),
-        ),
-        YaruRow(
-          enabled: true,
-          padding: const EdgeInsets.all(8.0),
-          leadingWidget: const Icon(Icons.brush),
-          trailingWidget: Text(
-            "primary_color".tr(),
-            style: const TextStyle(fontSize: 18),
-          ),
-          actionWidget: Flexible(
-            child: Wrap(
-              crossAxisAlignment: WrapCrossAlignment.start,
-              alignment: WrapAlignment.start,
-              children: [
-                for (var variant in YaruVariant.values)
-                  YaruColorDisk(
-                    onPressed: () {
+      child: YaruSection(
+        headline: Text("application".tr()),
+        child: Column(
+          children: [
+            YaruTile(
+              enabled: true,
+              padding: const EdgeInsets.all(8.0),
+              leading: const Icon(Icons.public),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    "language".tr(),
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                  const SizedBox(width: 8),
+                  DropdownButton<Locale>(
+                      value: context.locale,
+                      onChanged: (value) {
+                        ref
+                            .read(settingsProvider.notifier)
+                            .setLocale(context, value ?? const Locale("en_US"));
+                      },
+                      items: _getLanguageDropdownMenuItems()),
+                ],
+              ),
+            ),
+            YaruTile(
+              enabled: true,
+              padding: const EdgeInsets.all(8.0),
+              leading: const Icon(Icons.dark_mode),
+              trailing: Row(
+                children: [
+                  Text(
+                    "brightness".tr(),
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                  const SizedBox(width: 8),
+                  DropdownButton<ThemeMode>(
+                      value: settings.themeMode,
+                      items: [
+                        DropdownMenuItem(
+                          value: ThemeMode.system,
+                          child: Text("system".tr()),
+                        ),
+                        DropdownMenuItem(
+                          value: ThemeMode.light,
+                          child: Text("light".tr()),
+                        ),
+                        DropdownMenuItem(
+                          value: ThemeMode.dark,
+                          child: Text("dark".tr()),
+                        ),
+                      ],
+                      onChanged: (value) {
+                        ref
+                            .read(settingsProvider.notifier)
+                            .setThemeMode(value ?? ThemeMode.system);
+                      }),
+                ],
+              ),
+            ),
+            YaruTile(
+              enabled: true,
+              padding: const EdgeInsets.all(8.0),
+              leading: const Icon(Icons.accessibility),
+              trailing: Row(
+                children: [
+                  Text(
+                    "high_contrast".tr(),
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                  const SizedBox(width: 8),
+                  Switch(
+                    onChanged: (bool value) {
                       ref
                           .read(settingsProvider.notifier)
-                          .setYaruVariant(variant);
+                          .setHighContrast(value);
                     },
-                    color: variant.color,
-                    selected: settings.yaruVariant == variant,
+                    value: settings.highContrast,
                   ),
-              ],
+                ],
+              ),
             ),
-          ),
+            YaruTile(
+              enabled: true,
+              padding: const EdgeInsets.all(8.0),
+              leading: const Icon(Icons.brush),
+              trailing: Row(
+                children: [
+                  Text(
+                    "primary_color".tr(),
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                  const SizedBox(width: 8),
+                  SizedBox(
+                    width: 300,
+                    child: Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.start,
+                      alignment: WrapAlignment.start,
+                      children: [
+                        for (var variant in YaruVariant.values)
+                          YaruColorDisk(
+                            onPressed: () {
+                              ref
+                                  .read(settingsProvider.notifier)
+                                  .setYaruVariant(variant);
+                            },
+                            color: variant.color,
+                            selected: settings.yaruVariant == variant,
+                          ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
-      ]),
+      ),
     );
   }
 }
@@ -141,104 +169,138 @@ class _TextEditorSettings extends ConsumerWidget {
 
     return Container(
       margin: const EdgeInsets.all(8.0),
-      child: YaruSection(headline: "text_editor".tr(), children: [
-        YaruRow(
-          enabled: true,
-          padding: const EdgeInsets.all(8.0),
-          leadingWidget: const Icon(Icons.edit),
-          trailingWidget: Text(
-            "theme".tr(),
-            style: const TextStyle(fontSize: 18),
-          ),
-          actionWidget: DropdownButton<String?>(
-              value: settings.textEditorTheme,
-              items: _getTextEditorThemeDropdownMenuItems(),
-              onChanged: (value) {
-                ref
-                    .read(settingsProvider.notifier)
-                    .setTextEditorTheme(value ?? "vs");
-              }),
+      child: YaruSection(
+        headline: Text("text_editor".tr()),
+        child: Column(
+          children: [
+            YaruTile(
+              enabled: true,
+              padding: const EdgeInsets.all(8.0),
+              leading: const Icon(Icons.edit),
+              trailing: Row(
+                children: [
+                  Text(
+                    "theme".tr(),
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                  const SizedBox(width: 8),
+                  DropdownButton<String?>(
+                      value: settings.textEditorTheme,
+                      items: _getTextEditorThemeDropdownMenuItems(),
+                      onChanged: (value) {
+                        ref
+                            .read(settingsProvider.notifier)
+                            .setTextEditorTheme(value ?? "vs");
+                      }),
+                ],
+              ),
+            ),
+            YaruTile(
+              enabled: true,
+              padding: const EdgeInsets.all(8.0),
+              leading: const Icon(Icons.format_size),
+              trailing: Row(
+                children: [
+                  Text(
+                    "font_size".tr(),
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                  const SizedBox(width: 8),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width / 20,
+                    height: MediaQuery.of(context).size.height / 20,
+                    child: TextField(
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      controller: TextEditingController(
+                          text: settings.textEditorFontSize.toString()),
+                      decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.all(5),
+                      ),
+                      keyboardType:
+                          const TextInputType.numberWithOptions(decimal: true),
+                      onChanged: (value) {
+                        double? parsedValue = double.tryParse(value);
+                        if (parsedValue != null) {
+                          ref
+                              .read(settingsProvider.notifier)
+                              .setTextEditorFontSize(parsedValue);
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            YaruTile(
+              enabled: true,
+              padding: const EdgeInsets.all(8.0),
+              leading: const Icon(Icons.house),
+              trailing: Row(
+                children: [
+                  Text(
+                    "font_family".tr(),
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                  const SizedBox(width: 8),
+                  DropdownButton<String?>(
+                    value: settings.textEditorFontFamily,
+                    items: _getTextEditorFontFamilyDropdownMenuItems(),
+                    onChanged: (value) {
+                      ref
+                          .read(settingsProvider.notifier)
+                          .setTextEditorFontFamily(value ?? "Hack");
+                    },
+                  ),
+                ],
+              ),
+            ),
+            YaruTile(
+              enabled: true,
+              padding: const EdgeInsets.all(8.0),
+              leading: const Icon(Icons.wrap_text),
+              trailing: Row(
+                children: [
+                  Text(
+                    "wrap_text".tr(),
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                  const SizedBox(width: 8),
+                  Switch(
+                    onChanged: (bool value) {
+                      ref
+                          .read(settingsProvider.notifier)
+                          .setTextEditorWrap(value);
+                    },
+                    value: settings.textEditorWrap,
+                  ),
+                ],
+              ),
+            ),
+            YaruTile(
+              enabled: true,
+              padding: const EdgeInsets.all(8.0),
+              leading: const Icon(Icons.format_list_numbered),
+              trailing: Row(
+                children: [
+                  Text(
+                    "display_line_numbers".tr(),
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                  const SizedBox(width: 8),
+                  Switch(
+                    onChanged: (bool value) {
+                      ref
+                          .read(settingsProvider.notifier)
+                          .setTextEditorDisplayLineNumbers(value);
+                    },
+                    value: settings.textEditorDisplayLineNumbers,
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
-        YaruRow(
-          enabled: true,
-          padding: const EdgeInsets.all(8.0),
-          leadingWidget: const Icon(Icons.format_size),
-          trailingWidget: Text(
-            "font_size".tr(),
-            style: const TextStyle(fontSize: 18),
-          ),
-          actionWidget: SizedBox(
-              width: MediaQuery.of(context).size.width / 20,
-              height: MediaQuery.of(context).size.height / 20,
-              child: TextField(
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                controller: TextEditingController(
-                    text: settings.textEditorFontSize.toString()),
-                decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.all(5),
-                ),
-                keyboardType:
-                    const TextInputType.numberWithOptions(decimal: true),
-                onChanged: (value) {
-                  double? parsedValue = double.tryParse(value);
-                  if (parsedValue != null) {
-                    ref
-                        .read(settingsProvider.notifier)
-                        .setTextEditorFontSize(parsedValue);
-                  }
-                },
-              )),
-        ),
-        YaruRow(
-          enabled: true,
-          padding: const EdgeInsets.all(8.0),
-          leadingWidget: const Icon(Icons.house),
-          trailingWidget: Text(
-            "font_family".tr(),
-            style: const TextStyle(fontSize: 18),
-          ),
-          actionWidget: DropdownButton<String?>(
-              value: settings.textEditorFontFamily,
-              items: _getTextEditorFontFamilyDropdownMenuItems(),
-              onChanged: (value) {
-                ref
-                    .read(settingsProvider.notifier)
-                    .setTextEditorFontFamily(value ?? "Hack");
-              }),
-        ),
-        YaruRow(
-          enabled: true,
-          padding: const EdgeInsets.all(8.0),
-          leadingWidget: const Icon(Icons.wrap_text),
-          trailingWidget: Text(
-            "wrap_text".tr(),
-            style: const TextStyle(fontSize: 18),
-          ),
-          actionWidget: Switch(
-            onChanged: (bool value) {
-              ref.read(settingsProvider.notifier).setTextEditorWrap(value);
-            },
-            value: settings.textEditorWrap,
-          ),
-        ),
-        YaruRow(
-          enabled: true,
-          padding: const EdgeInsets.all(8.0),
-          leadingWidget: const Icon(Icons.format_list_numbered),
-          trailingWidget: Text(
-            "display_line_numbers".tr(),
-            style: const TextStyle(fontSize: 18),
-          ),
-          actionWidget: Switch(
-            onChanged: (bool value) {
-              ref
-                  .read(settingsProvider.notifier)
-                  .setTextEditorDisplayLineNumbers(value);
-            },
-            value: settings.textEditorDisplayLineNumbers,
-          ),
-        ),
-      ]),
+      ),
     );
   }
 }
@@ -252,62 +314,96 @@ class _About extends ConsumerWidget {
 
     return Container(
       margin: const EdgeInsets.all(8.0),
-      child: YaruSection(headline: "about".tr(), children: [
-        MouseRegion(
-          cursor: SystemMouseCursors.click,
-          child: GestureDetector(
-            behavior: HitTestBehavior.deferToChild,
-            onTap: () =>
-                showAboutDialog(context: context, useRootNavigator: false),
-            child: YaruRow(
-              enabled: true,
-              trailingWidget: Text(
-                "licenses".tr(),
-                style: const TextStyle(fontSize: 18),
+      child: YaruSection(
+        headline: Text("about".tr()),
+        child: Column(
+          children: [
+            MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: GestureDetector(
+                behavior: HitTestBehavior.deferToChild,
+                onTap: () =>
+                    showAboutDialog(context: context, useRootNavigator: false),
+                child: YaruTile(
+                  enabled: true,
+                  trailing: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            "licenses".tr(),
+                            style: const TextStyle(fontSize: 18),
+                          ),
+                          Text("licenses_description".tr()),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      const SizedBox.shrink(),
+                    ],
+                  ),
+                  padding: const EdgeInsets.all(8.0),
+                  leading: const Icon(Icons.document_scanner),
+                ),
               ),
-              description: "licenses_description".tr(),
-              padding: const EdgeInsets.all(8.0),
-              actionWidget: const SizedBox.shrink(),
-              leadingWidget: const Icon(Icons.document_scanner),
             ),
-          ),
-        ),
-        MouseRegion(
-          cursor: SystemMouseCursors.click,
-          child: GestureDetector(
-            onTap: () async {
-              await launchUrl(
-                  Uri.parse("https://www.github.com/gumbarros/DevWidgets"));
-            },
-            child: YaruRow(
-              enabled: true,
-              trailingWidget: Text(
-                "repository".tr(),
-                style: const TextStyle(fontSize: 18),
+            MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: GestureDetector(
+                onTap: () async {
+                  await launchUrl(
+                      Uri.parse("https://www.github.com/gumbarros/DevWidgets"));
+                },
+                child: YaruTile(
+                  enabled: true,
+                  trailing: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            "repository".tr(),
+                            style: const TextStyle(fontSize: 18),
+                          ),
+                          Text("repository_about".tr()),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      const SizedBox.shrink(),
+                    ],
+                  ),
+                  padding: const EdgeInsets.all(8.0),
+                  leading: const Icon(Icons.code),
+                ),
               ),
-              description: "repository_about".tr(),
-              padding: const EdgeInsets.all(8.0),
-              actionWidget: const SizedBox.shrink(),
-              leadingWidget: const Icon(Icons.code),
             ),
-          ),
+            YaruTile(
+              enabled: true,
+              trailing: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        "build_info".tr(),
+                        style: const TextStyle(fontSize: 18),
+                      ),
+                      buildInfo.when(
+                        loading: () => Text("..."),
+                        data: (data) => Text(data),
+                        error: (error, _) => Text(error.toString()),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  const SizedBox.shrink(),
+                ],
+              ),
+              padding: const EdgeInsets.all(8.0),
+              leading: const Icon(Icons.computer),
+            ),
+          ],
         ),
-        YaruRow(
-          enabled: true,
-          trailingWidget: Text(
-            "build_info".tr(),
-            style: const TextStyle(fontSize: 18),
-          ),
-          description: buildInfo.when(
-            loading: () => "...",
-            data: (data) => data,
-            error: (error, _) => error.toString(),
-          ),
-          padding: const EdgeInsets.all(8.0),
-          actionWidget: const SizedBox.shrink(),
-          leadingWidget: const Icon(Icons.computer),
-        ),
-      ]),
+      ),
     );
   }
 }

@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:highlight/languages/sql.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:yaru_widgets/yaru_widgets.dart';
+import 'package:yaru/yaru.dart';
 
 class SqlFormatterPage extends HookConsumerWidget {
   const SqlFormatterPage({super.key});
@@ -45,35 +45,46 @@ class SqlFormatterPage extends HookConsumerWidget {
         children: [
           Container(
             margin: const EdgeInsets.all(8.0),
-            child: YaruSection(headline: "configuration".tr(), children: [
-              YaruRow(
-                enabled: true,
-                leadingWidget: const Icon(
-                  Icons.code,
-                  size: 25,
-                ),
-                trailingWidget: Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: Text(
-                    "dialect".tr(),
-                    style: const TextStyle(fontSize: 18),
+            child: YaruSection(
+              headline: Text("configuration".tr()),
+              child: Column(
+                children: [
+                  YaruTile(
+                    enabled: true,
+                    leading: const Icon(
+                      Icons.code,
+                      size: 25,
+                    ),
+                    trailing: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Text(
+                            "dialect".tr(),
+                            style: const TextStyle(fontSize: 18),
+                          ),
+                        ),
+                        DropdownButton<SqlDialect>(
+                            value: ref.watch(sqlDialectProvider),
+                            items: getDropdownMenuItems<SqlDialect>(
+                                SqlDialect.values),
+                            onChanged: (selected) => ref
+                                .read(sqlDialectProvider.notifier)
+                                .state = selected!),
+                      ],
+                    ),
                   ),
-                ),
-                actionWidget: DropdownButton<SqlDialect>(
-                    value: ref.watch(sqlDialectProvider),
-                    items: getDropdownMenuItems<SqlDialect>(SqlDialect.values),
-                    onChanged: (selected) => ref
-                        .read(sqlDialectProvider.notifier)
-                        .state = selected!),
+                ],
               ),
-            ]),
+            ),
           ),
           SizedBox(
-              height: MediaQuery.of(context).size.height / 1.2,
-              child: IOEditor(
-                inputController: inputController,
-                outputController: outputController,
-              )),
+            height: MediaQuery.of(context).size.height / 1.2,
+            child: IOEditor(
+              inputController: inputController,
+              outputController: outputController,
+            ),
+          ),
         ],
       ),
     );

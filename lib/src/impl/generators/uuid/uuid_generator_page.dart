@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:yaru_widgets/yaru_widgets.dart';
+import 'package:yaru/yaru.dart';
 
 class UuidGeneratorPage extends HookConsumerWidget {
   const UuidGeneratorPage({super.key});
@@ -28,69 +28,92 @@ class UuidGeneratorPage extends HookConsumerWidget {
           Container(
             margin: const EdgeInsets.all(8.0),
             child: YaruSection(
-                headline: StringTranslateExtension("configuration").tr(),
-                children: [
-                  YaruRow(
-                    enabled: true,
-                    leadingWidget: const Icon(Icons.tag),
-                    trailingWidget: Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: ListTile(
-                        title: Text(StringTranslateExtension("uuid_type").tr()),
-                        subtitle: Text(
-                            StringTranslateExtension("uuid_type_description")
-                                .tr()),
+              headline: Text(StringTranslateExtension("configuration").tr()),
+              child: Column(children: [
+                YaruTile(
+                  enabled: true,
+                  leading: const Icon(Icons.tag),
+                  trailing: Row(
+                    // Keep trailing compact to avoid infinite constraints
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(StringTranslateExtension("uuid_type").tr()),
+                            Text(
+                              StringTranslateExtension(
+                                      "uuid_type_description")
+                                  .tr(),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    actionWidget: DropdownButton<UuidType>(
-                        value: ref.watch(uuidTypeProvider),
-                        items: getDropdownMenuItems<UuidType>(UuidType.values),
-                        onChanged: (selected) => ref
-                            .read(uuidTypeProvider.notifier)
-                            .state = selected!),
+                      DropdownButton<UuidType>(
+                          value: ref.watch(uuidTypeProvider),
+                          items:
+                              getDropdownMenuItems<UuidType>(UuidType.values),
+                          onChanged: (selected) => ref
+                              .read(uuidTypeProvider.notifier)
+                              .state = selected!),
+                    ],
                   ),
-                  YaruRow(
-                    enabled: true,
-                    leadingWidget: const Icon(Icons.remove),
-                    trailingWidget: Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: ListTile(
-                        title: Text("hyphens".tr()),
+                ),
+                YaruTile(
+                  enabled: true,
+                  leading: const Icon(Icons.remove),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Text("hyphens".tr()),
                       ),
-                    ),
-                    actionWidget: Switch(
-                      onChanged: (value) =>
-                          ref.read(hiphensProvider.notifier).state = value,
-                      value: ref.watch(hiphensProvider),
-                    ),
+                      Switch(
+                        onChanged: (value) =>
+                            ref.read(hiphensProvider.notifier).state = value,
+                        value: ref.watch(hiphensProvider),
+                      ),
+                    ],
                   ),
-                  YaruRow(
-                    enabled: true,
-                    leadingWidget: const Icon(Icons.format_color_text),
-                    trailingWidget: Padding(
-                      padding: const EdgeInsets.only(left: 2.0),
-                      child: ListTile(title: Text("uppercase".tr())),
-                    ),
-                    actionWidget: Switch(
-                      onChanged: (value) =>
-                          ref.read(uppercaseProvider.notifier).state = value,
-                      value: ref.watch(uppercaseProvider),
-                    ),
+                ),
+                YaruTile(
+                  enabled: true,
+                  leading: const Icon(Icons.format_color_text),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 2.0, right: 8),
+                        child: Text("uppercase".tr()),
+                      ),
+                      Switch(
+                        onChanged: (value) =>
+                            ref.read(uppercaseProvider.notifier).state = value,
+                        value: ref.watch(uppercaseProvider),
+                      ),
+                    ],
                   ),
-                  YaruRow(
-                    enabled: true,
-                    leadingWidget: const Icon(Icons.format_list_numbered),
-                    trailingWidget: Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: ListTile(
-                          title: Text(StringTranslateExtension("amount").tr())),
-                    ),
-                    actionWidget: Flexible(
-                      child: Row(
+                ),
+                YaruTile(
+                  enabled: true,
+                  leading: const Icon(Icons.format_list_numbered),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child:
+                            Text(StringTranslateExtension("amount").tr()),
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Flexible(
-                            flex: 1,
+                          SizedBox(
+                            width: 100,
                             child: TextFormField(
                               keyboardType: TextInputType.number,
                               inputFormatters: [
@@ -110,35 +133,35 @@ class UuidGeneratorPage extends HookConsumerWidget {
                             ),
                           ),
                           const SizedBox(width: 8),
-                          Flexible(
-                            flex: 2,
-                            child: ElevatedButton(
-                              onPressed: () => ref
-                                  .read(uuidGeneratorProvider.notifier)
-                                  .generate(),
-                              child: Text(
-                                  StringTranslateExtension("generate").tr()),
-                            ),
+                          ElevatedButton(
+                            onPressed: () => ref
+                                .read(uuidGeneratorProvider.notifier)
+                                .generate(),
+                            child: Text(
+                                StringTranslateExtension("generate").tr()),
                           ),
                         ],
                       ),
-                    ),
+                    ],
                   ),
-                ]),
+                ),
+              ]),
+            ),
           ),
           SizedBox(
-              height: MediaQuery.of(context).size.height / 1.2,
-              child: OutputEditor(
-                outputController: outputController,
-                actionButtons: [
-                  ElevatedButton.icon(
-                    icon: const Icon(Icons.clear),
-                    label: Text("clear".tr()),
-                    onPressed: () =>
-                        ref.read(uuidGeneratorProvider.notifier).clear(),
-                  ),
-                ],
-              )),
+            height: MediaQuery.of(context).size.height / 1.2,
+            child: OutputEditor(
+              outputController: outputController,
+              actionButtons: [
+                ElevatedButton.icon(
+                  icon: const Icon(Icons.clear),
+                  label: Text("clear".tr()),
+                  onPressed: () =>
+                      ref.read(uuidGeneratorProvider.notifier).clear(),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

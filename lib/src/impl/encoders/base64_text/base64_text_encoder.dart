@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:dev_widgets/src/impl/encoders/base64_text/base64_encoding_type.dart';
 
-String decodeBase64(content,
+String decodeBase64(String content,
     {Base64EncodingType? encodingType = Base64EncodingType.ascii}) {
   final bytes = base64.decode(content);
 
@@ -10,7 +10,7 @@ String decodeBase64(content,
       : utf8.decode(bytes);
 }
 
-String encodeBase64(content,
+String encodeBase64(String content,
     {Base64EncodingType? encodingType = Base64EncodingType.ascii}) {
   final bytes = encodingType == Base64EncodingType.ascii
       ? ascii.encoder.convert(content)

@@ -7,7 +7,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:yaru_widgets/yaru_widgets.dart';
+import 'package:yaru/yaru.dart';
 
 class Base64TextEncoderPage extends HookConsumerWidget {
   const Base64TextEncoderPage({super.key});
@@ -41,51 +41,68 @@ class Base64TextEncoderPage extends HookConsumerWidget {
           Container(
             margin: const EdgeInsets.all(8.0),
             child: YaruSection(
-                headline: StringTranslateExtension("configuration").tr(),
+              headline: Text(StringTranslateExtension("configuration").tr()),
+              child: Column(
                 children: [
-                  YaruRow(
+                  YaruTile(
                     enabled: true,
-                    leadingWidget: const Icon(Icons.compare_arrows_sharp),
-                    trailingWidget: Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: ListTile(
-                          title:
+                    leading: const Icon(Icons.compare_arrows_sharp),
+                    trailing: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
                               Text(StringTranslateExtension("conversion").tr()),
-                          subtitle: Text(
-                              StringTranslateExtension("conversion_mode")
-                                  .tr())),
+                              Text(StringTranslateExtension("conversion_mode").tr()),
+                            ],
+                          ),
+                          DropdownButton<ConversionMode>(
+                            value: ref.watch(conversionModeProvider),
+                            items: getDropdownMenuItems<ConversionMode>(
+                                ConversionMode.values),
+                            onChanged: (selected) {
+                              ref.read(conversionModeProvider.notifier).state =
+                                  selected!;
+                            },
+                          ),
+                        ],
+                      ),
                     ),
-                    actionWidget: DropdownButton<ConversionMode>(
-                        value: ref.watch(conversionModeProvider),
-                        items: getDropdownMenuItems<ConversionMode>(
-                            ConversionMode.values),
-                        onChanged: (selected) {
-                          ref.read(conversionModeProvider.notifier).state =
-                              selected!;
-                        }),
                   ),
-                  YaruRow(
+                  YaruTile(
                     enabled: true,
-                    leadingWidget: const Icon(Icons.grid_3x3),
-                    trailingWidget: Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: ListTile(
-                          title:
+                    leading: const Icon(Icons.grid_3x3),
+                    trailing: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
                               Text(StringTranslateExtension("encoding").tr()),
-                          subtitle: Text(
-                              StringTranslateExtension("encoding_description")
-                                  .tr())),
+                              Text(StringTranslateExtension("encoding_description").tr()),
+                            ],
+                          ),
+                          DropdownButton<Base64EncodingType>(
+                            value: ref.watch(encodingTypeProvider),
+                            items: getDropdownMenuItems<Base64EncodingType>(
+                                Base64EncodingType.values),
+                            onChanged: (selected) {
+                              ref.read(encodingTypeProvider.notifier).state =
+                                  selected!;
+                            },
+                          ),
+                        ],
+                      ),
                     ),
-                    actionWidget: DropdownButton<Base64EncodingType>(
-                        value: ref.watch(encodingTypeProvider),
-                        items: getDropdownMenuItems<Base64EncodingType>(
-                            Base64EncodingType.values),
-                        onChanged: (selected) {
-                          ref.read(encodingTypeProvider.notifier).state =
-                              selected!;
-                        }),
-                  )
-                ]),
+                  ),
+                ],
+              ),
+            ),
           ),
           SizedBox(
               height: MediaQuery.of(context).size.height / 1.2,

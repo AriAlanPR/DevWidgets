@@ -25,7 +25,7 @@ String formatJson(String json,
   }
 }
 
-sortJson(json) {
+dynamic sortJson(dynamic json) {
   if (json is Map) {
     for (var entry in json.entries) {
       if (entry.value is List || entry.value is Map) {
@@ -56,5 +56,5 @@ sortJson(json) {
   return _sortKeys(json.value);
 }
 
-_sortKeys(Map map) => Map.fromEntries(
+Map<dynamic, dynamic>_sortKeys(Map map) => Map.fromEntries(
     map.entries.toList()..sort((e1, e2) => e1.key.compareTo(e2.key)));

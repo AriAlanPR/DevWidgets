@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:yaru_widgets/yaru_widgets.dart';
+import 'package:yaru/yaru.dart';
 
 class CpfCnpjGeneratorPage extends HookConsumerWidget {
   final GenerationMode mode;
@@ -31,28 +31,28 @@ class CpfCnpjGeneratorPage extends HookConsumerWidget {
             child: YaruSection(
                 headline: StringTranslateExtension("configuration").tr(),
                 children: [
-                  YaruRow(
+                  YaruTile(
                     enabled: true,
-                    leadingWidget: const Icon(Icons.more_horiz),
-                    trailingWidget: Padding(
+                    leading: const Icon(Icons.more_horiz),
+                    trailing: Padding(
                       padding: const EdgeInsets.only(left: 8.0),
                       child: ListTile(title: Text("format".tr())),
                     ),
-                    actionWidget: Switch(
+                     Switch(
                       onChanged: (value) =>
                           ref.read(isFormattedProvider.notifier).state = value,
                       value: ref.watch(isFormattedProvider),
                     ),
                   ),
-                  YaruRow(
+                  YaruTile(
                     enabled: true,
-                    leadingWidget: const Icon(Icons.format_list_numbered),
-                    trailingWidget: Padding(
+                    leading: const Icon(Icons.format_list_numbered),
+                    trailing: Padding(
                       padding: const EdgeInsets.only(left: 8.0),
                       child: ListTile(
                           title: Text(StringTranslateExtension("amount").tr())),
                     ),
-                    actionWidget: Flexible(
+                     Flexible(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [

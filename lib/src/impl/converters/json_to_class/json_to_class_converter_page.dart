@@ -9,7 +9,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:highlight/languages/dart.dart';
 import 'package:highlight/languages/json.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:yaru_widgets/yaru_widgets.dart';
+import 'package:yaru/yaru.dart';
 
 class JsonToClassConverterPage extends HookConsumerWidget {
   const JsonToClassConverterPage({super.key});
@@ -43,20 +43,20 @@ class JsonToClassConverterPage extends HookConsumerWidget {
           Container(
             margin: const EdgeInsets.all(8.0),
             child: YaruSection(headline: "configuration".tr(), children: [
-              YaruRow(
+              YaruTile(
                 enabled: true,
-                leadingWidget: const Icon(
+                leading: const Icon(
                   Icons.title,
                   size: 25,
                 ),
-                trailingWidget: Padding(
+                trailing: Padding(
                   padding: const EdgeInsets.only(left: 8.0),
                   child: Text(
                     "class_name".tr(),
                     style: const TextStyle(fontSize: 18),
                   ),
                 ),
-                actionWidget: SizedBox(
+                 SizedBox(
                   width: MediaQuery.of(context).size.width / 10,
                   child: TextFormField(
                     textAlign: TextAlign.end,
@@ -71,20 +71,20 @@ class JsonToClassConverterPage extends HookConsumerWidget {
                   ),
                 ),
               ),
-              YaruRow(
+              YaruTile(
                 enabled: true,
-                leadingWidget: const Icon(
+                leading: const Icon(
                   Icons.code,
                   size: 25,
                 ),
-                trailingWidget: Padding(
+                trailing: Padding(
                   padding: const EdgeInsets.only(left: 8.0),
                   child: Text(
                     StringTranslateExtension("programming_language").tr(),
                     style: const TextStyle(fontSize: 18),
                   ),
                 ),
-                actionWidget: DropdownButton<ProgrammingLanguage>(
+                 DropdownButton<ProgrammingLanguage>(
                     value: ref.watch(programmingLanguageProvider),
                     items: getDropdownMenuItems<ProgrammingLanguage>(
                         ProgrammingLanguage.values),

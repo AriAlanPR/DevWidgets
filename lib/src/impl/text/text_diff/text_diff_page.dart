@@ -11,7 +11,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:multi_split_view/multi_split_view.dart';
 import 'package:pretty_diff_text/pretty_diff_text.dart';
-import 'package:yaru_widgets/yaru_widgets.dart';
+import 'package:yaru/yaru.dart';
 
 class TextDiffPage extends HookConsumerWidget {
   const TextDiffPage({super.key});
@@ -52,8 +52,9 @@ class TextDiffPage extends HookConsumerWidget {
           Container(
             margin: const EdgeInsets.all(8.0),
             child: YaruSection(
-                headline: StringTranslateExtension("configuration").tr(),
-                children: [
+                headline: Text(StringTranslateExtension("configuration").tr()),
+                child: Column(
+                  children: [
                   RadioListTile<DiffCleanupType>(
                       title: Text("semantic_cleanup".tr()),
                       subtitle: Text("semantic_cleanup_description".tr()),
@@ -103,7 +104,7 @@ class TextDiffPage extends HookConsumerWidget {
                         ref.read(diffCleanupTypeProvider.notifier).state =
                             value ?? DiffCleanupType.EFFICIENCY;
                       }),
-                ]),
+                ],),),
           ),
           SizedBox(
               height: MediaQuery.of(context).size.height / 2.5,
@@ -142,8 +143,10 @@ class TextDiffPage extends HookConsumerWidget {
                 context: context,
                 builder: (context) {
                   return AlertDialog(
-                    title: YaruDialogTitle(
-                        closeIconData: Icons.close, title: "difference".tr()),
+                    title: YaruTile(
+                        enabled: true,
+                        trailing: const Icon(Icons.close),
+                        title: Text("difference".tr())),
                     content: _Diff(settings: settings, isDialog: true),
                   );
                 },

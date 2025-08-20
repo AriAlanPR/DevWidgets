@@ -11,7 +11,7 @@ import 'package:highlight/languages/json.dart';
 import 'package:highlight/languages/yaml.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:json2yaml/json2yaml.dart';
-import 'package:yaru_widgets/yaru_widgets.dart';
+import 'package:yaru/yaru.dart';
 
 class JsonYamlConverterPage extends HookConsumerWidget {
   const JsonYamlConverterPage({super.key});
@@ -50,20 +50,20 @@ class JsonYamlConverterPage extends HookConsumerWidget {
         Container(
           margin: const EdgeInsets.all(8.0),
           child: YaruSection(headline: "configuration".tr(), children: [
-            YaruRow(
+            YaruTile(
               enabled: true,
-              leadingWidget: const Icon(
+              leading: const Icon(
                 Icons.compare_arrows_sharp,
                 size: 25,
               ),
-              trailingWidget: Padding(
+              trailing: Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: Text(
                   "conversion_type".tr(),
                   style: const TextStyle(fontSize: 18),
                 ),
               ),
-              actionWidget: DropdownButton<JsonYamlConversionType>(
+               DropdownButton<JsonYamlConversionType>(
                   value: ref.watch(conversionTypeProvider),
                   items: getDropdownMenuItems<JsonYamlConversionType>(
                       JsonYamlConversionType.values),
@@ -75,17 +75,17 @@ class JsonYamlConverterPage extends HookConsumerWidget {
                 visible: ref.watch(conversionTypeProvider) ==
                     JsonYamlConversionType.yamlToJson,
                 child: Column(children: [
-                  YaruRow(
+                  YaruTile(
                     enabled: true,
-                    leadingWidget: const Icon(Icons.arrow_right_alt),
-                    trailingWidget: Padding(
+                    leading: const Icon(Icons.arrow_right_alt),
+                    trailing: Padding(
                       padding: const EdgeInsets.only(left: 8.0),
                       child: Text(
                         "indentation".tr(),
                         style: const TextStyle(fontSize: 18),
                       ),
                     ),
-                    actionWidget: DropdownButton<Indentation>(
+                     DropdownButton<Indentation>(
                         value: ref.watch(indentationProvider),
                         items: getDropdownMenuItems<Indentation>(
                             Indentation.values),
@@ -98,17 +98,17 @@ class JsonYamlConverterPage extends HookConsumerWidget {
                 visible: ref.watch(conversionTypeProvider) ==
                     JsonYamlConversionType.jsonToYaml,
                 child: Column(children: [
-                  YaruRow(
+                  YaruTile(
                     enabled: true,
-                    leadingWidget: const Icon(Icons.arrow_right_alt),
-                    trailingWidget: Padding(
+                    leading: const Icon(Icons.arrow_right_alt),
+                    trailing: Padding(
                       padding: const EdgeInsets.only(left: 8.0),
                       child: Text(
                         "yaml_style".tr(),
                         style: const TextStyle(fontSize: 18),
                       ),
                     ),
-                    actionWidget: DropdownButton<YamlStyle>(
+                     DropdownButton<YamlStyle>(
                         value: ref.watch(yamlStyleProvider),
                         items: getYamlStyleDropdownMenuItems(),
                         onChanged: (selected) => ref
@@ -116,17 +116,17 @@ class JsonYamlConverterPage extends HookConsumerWidget {
                             .state = selected!),
                   ),
                 ])),
-            YaruRow(
+            YaruTile(
               enabled: true,
-              leadingWidget: const Icon(Icons.sort_by_alpha),
-              trailingWidget: Padding(
+              leading: const Icon(Icons.sort_by_alpha),
+              trailing: Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: Text(
                   "sort_properties_alphabetically".tr(),
                   style: const TextStyle(fontSize: 18),
                 ),
               ),
-              actionWidget: Switch(
+               Switch(
                 value: ref.watch(sortAlphabeticallyProvider),
                 onChanged: (value) =>
                     ref.read(sortAlphabeticallyProvider.notifier).state = value,

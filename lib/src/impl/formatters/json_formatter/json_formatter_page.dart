@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:highlight/languages/json.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:yaru_widgets/yaru_widgets.dart';
+import 'package:yaru/yaru.dart';
 
 class JsonFormatterPage extends HookConsumerWidget {
   const JsonFormatterPage({super.key});
@@ -48,17 +48,17 @@ class JsonFormatterPage extends HookConsumerWidget {
             child: YaruSection(
                 headline: StringTranslateExtension("configuration").tr(),
                 children: [
-                  YaruRow(
+                  YaruTile(
                     enabled: true,
-                    leadingWidget: const Icon(Icons.arrow_right_alt),
-                    trailingWidget: Padding(
+                    leading: const Icon(Icons.arrow_right_alt),
+                    trailing: Padding(
                       padding: const EdgeInsets.only(left: 8.0),
                       child: Text(
                         "indentation".tr(),
                         style: const TextStyle(fontSize: 18),
                       ),
                     ),
-                    actionWidget: DropdownButton<Indentation>(
+                     DropdownButton<Indentation>(
                         value: ref.watch(indentationProvider),
                         items: getDropdownMenuItems<Indentation>(
                             Indentation.values),
@@ -66,17 +66,17 @@ class JsonFormatterPage extends HookConsumerWidget {
                             .read(indentationProvider.notifier)
                             .state = selected!),
                   ),
-                  YaruRow(
+                  YaruTile(
                     enabled: true,
-                    leadingWidget: const Icon(Icons.sort_by_alpha),
-                    trailingWidget: Padding(
+                    leading: const Icon(Icons.sort_by_alpha),
+                    trailing: Padding(
                       padding: const EdgeInsets.only(left: 8.0),
                       child: Text(
                         "sort_json_properties_alphabetically".tr(),
                         style: const TextStyle(fontSize: 18),
                       ),
                     ),
-                    actionWidget: Switch(
+                     Switch(
                       value: ref.watch(sortAlphabeticallyProvider),
                       onChanged: (value) => ref
                           .read(sortAlphabeticallyProvider.notifier)

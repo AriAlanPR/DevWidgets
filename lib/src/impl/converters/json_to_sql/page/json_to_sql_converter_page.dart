@@ -5,7 +5,7 @@ import 'package:dev_widgets/src/impl/converters/json_to_sql/page/json_to_sql_con
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:yaru_widgets/yaru_widgets.dart';
+import 'package:yaru/yaru.dart';
 
 class JsonToSqlConverterPage extends ConsumerWidget {
   const JsonToSqlConverterPage({super.key});

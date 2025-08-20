@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:highlight/languages/sql.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:yaru_widgets/yaru_widgets.dart';
+import 'package:yaru/yaru.dart';
 
 class SqlFormatterPage extends HookConsumerWidget {
   const SqlFormatterPage({super.key});
@@ -46,20 +46,20 @@ class SqlFormatterPage extends HookConsumerWidget {
           Container(
             margin: const EdgeInsets.all(8.0),
             child: YaruSection(headline: "configuration".tr(), children: [
-              YaruRow(
+              YaruTile(
                 enabled: true,
-                leadingWidget: const Icon(
+                leading: const Icon(
                   Icons.code,
                   size: 25,
                 ),
-                trailingWidget: Padding(
+                trailing: Padding(
                   padding: const EdgeInsets.only(left: 8.0),
                   child: Text(
                     "dialect".tr(),
                     style: const TextStyle(fontSize: 18),
                   ),
                 ),
-                actionWidget: DropdownButton<SqlDialect>(
+                 DropdownButton<SqlDialect>(
                     value: ref.watch(sqlDialectProvider),
                     items: getDropdownMenuItems<SqlDialect>(SqlDialect.values),
                     onChanged: (selected) => ref

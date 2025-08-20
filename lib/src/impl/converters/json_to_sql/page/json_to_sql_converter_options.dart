@@ -9,7 +9,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:highlight/languages/json.dart';
-import 'package:yaru_widgets/yaru_widgets.dart';
+import 'package:yaru/yaru.dart';
 
 const exampleJson = """[
   {
@@ -169,8 +169,8 @@ class _Configuration extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     return YaruSection(headline: "configuration".tr(), children: [
-      YaruRow(
-          trailingWidget: Container(
+      YaruTile(
+          trailing: Container(
             padding: const EdgeInsets.all(8.0),
             width: MediaQuery.of(context).size.width / 5,
             child: ListTile(
@@ -186,9 +186,9 @@ class _Configuration extends ConsumerWidget {
             ),
           ),
           enabled: true,
-          actionWidget: const SizedBox.shrink()),
-      YaruRow(
-          trailingWidget: Row(children: [
+           const SizedBox.shrink()),
+      YaruTile(
+          trailing: Row(children: [
             Container(
                 padding: const EdgeInsets.all(8.0),
                 width: MediaQuery.of(context).size.width / 5,
@@ -216,9 +216,9 @@ class _Configuration extends ConsumerWidget {
             ),
           ]),
           enabled: true,
-          actionWidget: const SizedBox.shrink()),
-      YaruRow(
-          trailingWidget: Row(children: [
+           const SizedBox.shrink()),
+      YaruTile(
+          trailing: Row(children: [
             Container(
                 padding: const EdgeInsets.all(8.0),
                 width: MediaQuery.of(context).size.width / 5,
@@ -245,9 +245,9 @@ class _Configuration extends ConsumerWidget {
             ),
           ]),
           enabled: true,
-          actionWidget: const SizedBox.shrink()),
-      YaruRow(
-          trailingWidget: Row(children: [
+           const SizedBox.shrink()),
+      YaruTile(
+          trailing: Row(children: [
             Container(
                 padding: const EdgeInsets.all(8.0),
                 width: MediaQuery.of(context).size.width / 5,
@@ -298,7 +298,7 @@ class _Configuration extends ConsumerWidget {
             ),
           ]),
           enabled: true,
-          actionWidget: const SizedBox.shrink()),
+           const SizedBox.shrink()),
     ]);
   }
 }

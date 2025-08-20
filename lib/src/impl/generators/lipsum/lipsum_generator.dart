@@ -17,9 +17,7 @@ String generateLipsum({
         return i.sentences(count);
       case LipsumType.paragraphs:
         return i.paragraphs(count);
-      default:
-        return "";
-    }
+      }
   } on Exception catch (_) {
     return "error".tr();
   }

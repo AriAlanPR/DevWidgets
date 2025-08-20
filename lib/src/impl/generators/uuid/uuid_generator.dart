@@ -18,10 +18,7 @@ String generateUuid({
       case UuidType.v4:
         result = uuid.v4();
         break;
-      default:
-        result = uuid.v4();
-        break;
-    }
+      }
   } on Exception catch (_) {
     return "error".tr();
   }

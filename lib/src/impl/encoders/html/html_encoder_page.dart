@@ -42,6 +42,9 @@ class HtmlEncoderPage extends HookConsumerWidget {
     return SizedBox(
       height: MediaQuery.of(context).size.height - kToolbarHeight,
       child: ListView(
+        physics: const ClampingScrollPhysics(),
+        primary: false,
+        shrinkWrap: true,
         children: [
           Container(
             margin: const EdgeInsets.all(8.0),
@@ -49,23 +52,11 @@ class HtmlEncoderPage extends HookConsumerWidget {
               headline: Text(StringTranslateExtension("configuration").tr()),
               child: Column(
                 children: [
-                  YaruTile(
-                    enabled: true,
+                  ListTile(
                     leading: const Icon(Icons.compare_arrows_sharp),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(StringTranslateExtension("conversion").tr()),
-                              Text(StringTranslateExtension("conversion_mode").tr()),
-                            ],
-                          ),
-                        ),
-                        DropdownButton<ConversionMode>(
+                    title: Text(StringTranslateExtension("conversion").tr()),
+                    subtitle: Text(StringTranslateExtension("conversion_mode").tr()),
+                    trailing: DropdownButton<ConversionMode>(
                           value: ref.watch(conversionModeProvider),
                           items: getDropdownMenuItems<ConversionMode>(
                               ConversionMode.values),
@@ -74,21 +65,20 @@ class HtmlEncoderPage extends HookConsumerWidget {
                                 selected!;
                           },
                         ),
-                      ],
-                    ),
-                  ),
+                  )
                 ],
               ),
             ),
           ),
-          SizedBox(
-              height: MediaQuery.of(context).size.height / 1.2,
-              child: IOEditor(
-                inputController: inputController,
-                usesCodeControllers: true,
-                outputController: outputController,
-                isVerticalLayout: true,
-              )),
+          IOEditor(
+            inputController: inputController,
+            usesCodeControllers: true,
+            outputController: outputController,
+            singleScroll: true,
+            useExpansionPanels: true,
+            inputInitiallyExpanded: true,
+            outputInitiallyExpanded: true,
+          ),
         ],
       ),
     );

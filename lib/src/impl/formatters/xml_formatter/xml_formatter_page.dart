@@ -42,6 +42,9 @@ class XmlFormatterPage extends HookConsumerWidget {
     return SizedBox(
       height: MediaQuery.of(context).size.height - kToolbarHeight,
       child: ListView(
+        physics: const ClampingScrollPhysics(),
+        primary: false,
+        shrinkWrap: true,
         children: [
           Container(
             margin: const EdgeInsets.all(8.0),
@@ -53,6 +56,7 @@ class XmlFormatterPage extends HookConsumerWidget {
                     enabled: true,
                     leading: const Icon(Icons.arrow_right_alt),
                     trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -75,12 +79,14 @@ class XmlFormatterPage extends HookConsumerWidget {
               ),
             ),
           ),
-          SizedBox(
-              height: MediaQuery.of(context).size.height / 1.2,
-              child: IOEditor(
-                inputController: inputController,
-                outputController: outputController,
-              )),
+          IOEditor(
+            inputController: inputController,
+            outputController: outputController,
+            singleScroll: true,
+            useExpansionPanels: true,
+            inputInitiallyExpanded: true,
+            outputInitiallyExpanded: true,
+          ),
         ],
       ),
     );

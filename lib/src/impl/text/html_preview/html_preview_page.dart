@@ -30,24 +30,31 @@ class HtmlPreviewPage extends HookConsumerWidget {
 
     return SizedBox(
         height: MediaQuery.of(context).size.height - kToolbarHeight,
-        child: SingleChildScrollView(
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height / 1.2,
-            child: IOEditor(
-                inputController: inputController,
-                outputChild: Column(children: [
-                  IOToolbar(title: "preview".tr()),
-                  Container(
-                      width: MediaQuery.of(context).size.width / 1.5,
-                      margin: const EdgeInsets.all(8.0),
-                      height: MediaQuery.of(context).size.height / 1.5,
-                      child: Consumer(
-                        builder: (context, ref, _) => HtmlWidget(
-                            ref.watch(outputTextProvider),
-                            buildAsync: true),
-                      )),
-                ])),
-          ),
+        child: ListView(
+          physics: const ClampingScrollPhysics(),
+          primary: false,
+          shrinkWrap: true,
+          children: [
+            IOEditor(
+              inputController: inputController,
+              singleScroll: true,
+              useExpansionPanels: true,
+              inputInitiallyExpanded: true,
+              outputInitiallyExpanded: true,
+              outputChild: Column(children: [
+                IOToolbar(title: "preview".tr()),
+                Container(
+                    width: MediaQuery.of(context).size.width / 1.5,
+                    margin: const EdgeInsets.all(8.0),
+                    height: MediaQuery.of(context).size.height / 1.5,
+                    child: Consumer(
+                      builder: (context, ref, _) => HtmlWidget(
+                          ref.watch(outputTextProvider),
+                          buildAsync: true),
+                    )),
+              ]),
+            ),
+          ],
         ));
   }
 }

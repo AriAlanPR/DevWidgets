@@ -42,6 +42,9 @@ class SqlFormatterPage extends HookConsumerWidget {
     return SizedBox(
       height: MediaQuery.of(context).size.height - kToolbarHeight,
       child: ListView(
+        physics: const ClampingScrollPhysics(),
+        primary: false,
+        shrinkWrap: true,
         children: [
           Container(
             margin: const EdgeInsets.all(8.0),
@@ -56,6 +59,7 @@ class SqlFormatterPage extends HookConsumerWidget {
                       size: 25,
                     ),
                     trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -78,12 +82,13 @@ class SqlFormatterPage extends HookConsumerWidget {
               ),
             ),
           ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height / 1.2,
-            child: IOEditor(
-              inputController: inputController,
-              outputController: outputController,
-            ),
+          IOEditor(
+            inputController: inputController,
+            outputController: outputController,
+            singleScroll: true,
+            useExpansionPanels: true,
+            inputInitiallyExpanded: true,
+            outputInitiallyExpanded: true,
           ),
         ],
       ),

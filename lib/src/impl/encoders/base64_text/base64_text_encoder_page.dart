@@ -37,6 +37,9 @@ class Base64TextEncoderPage extends HookConsumerWidget {
     return SizedBox(
       height: MediaQuery.of(context).size.height - kToolbarHeight,
       child: ListView(
+        physics: const ClampingScrollPhysics(),
+        primary: false,
+        shrinkWrap: true,
         children: [
           Container(
             margin: const EdgeInsets.all(8.0),
@@ -104,14 +107,15 @@ class Base64TextEncoderPage extends HookConsumerWidget {
               ),
             ),
           ),
-          SizedBox(
-              height: MediaQuery.of(context).size.height / 1.2,
-              child: IOEditor(
-                inputController: inputController,
-                usesCodeControllers: false,
-                outputController: outputController,
-                isVerticalLayout: true,
-              )),
+          IOEditor(
+            inputController: inputController,
+            usesCodeControllers: false,
+            outputController: outputController,
+            singleScroll: true,
+            useExpansionPanels: true,
+            inputInitiallyExpanded: true,
+            outputInitiallyExpanded: true,
+          ),
         ],
       ),
     );

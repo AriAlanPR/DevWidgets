@@ -32,45 +32,53 @@ class Base64ImageEncoderPage extends HookConsumerWidget {
 
     return SizedBox(
         height: MediaQuery.of(context).size.height - kToolbarHeight,
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height / 1.2,
-          child: IOEditor(
-              usesCodeControllers: false,
-              inputController: inputController,
-              outputChild: Column(
-                children: [
-                  IOToolbar(
-                    title: "output".tr(),
-                    actions: [
-                      ElevatedButton.icon(
-                          onPressed: () => uploadImage(ref),
-                          icon: const Icon(Icons.image),
-                          label: Text(
-                            StringTranslateExtension("upload_image").tr(),
-                          )),
-                      Visibility(
-                        visible: !kIsWeb,
-                        child: ElevatedButton.icon(
-                            onPressed: () => downloadImage(context, ref),
-                            icon: const Icon(Icons.download),
-                            label: Text("download_image".tr())),
-                      )
-                    ],
-                  ),
-                  OutputEditor(
-                      outputController: null,
-                      outputChild: Screenshot(
-                        controller: ref.watch(screenshotControllerProvider),
-                        child: Image.memory(
-                          ref.watch(outputImageProvider),
-                          errorBuilder: ((_, __, ___) =>
-                              const SizedBox.shrink()),
+        child: ListView(
+          physics: const ClampingScrollPhysics(),
+          primary: false,
+          shrinkWrap: true,
+          children: [
+            IOEditor(
+                usesCodeControllers: false,
+                singleScroll: true,
+                useExpansionPanels: true,
+                inputInitiallyExpanded: true,
+                outputInitiallyExpanded: true,
+                inputController: inputController,
+                outputChild: Column(
+                  children: [
+                    IOToolbar(
+                      title: "output".tr(),
+                      actions: [
+                        ElevatedButton.icon(
+                            onPressed: () => uploadImage(ref),
+                            icon: const Icon(Icons.image),
+                            label: Text(
+                              StringTranslateExtension("upload_image").tr(),
+                            )),
+                        Visibility(
+                          visible: !kIsWeb,
+                          child: ElevatedButton.icon(
+                              onPressed: () => downloadImage(context, ref),
+                              icon: const Icon(Icons.download),
+                              label: Text("download_image".tr())),
+                        )
+                      ],
+                    ),
+                    OutputEditor(
+                        outputController: null,
+                        outputChild: Screenshot(
+                          controller: ref.watch(screenshotControllerProvider),
+                          child: Image.memory(
+                            ref.watch(outputImageProvider),
+                            errorBuilder: ((_, __, ___) =>
+                                const SizedBox.shrink()),
+                          ),
                         ),
-                      ),
-                      usesCodeControllers: false,
-                      isVerticalLayout: false),
-                ],
-              )),
+                        usesCodeControllers: false,
+                        isVerticalLayout: false),
+                  ],
+                )),
+          ],
         ));
   }
 }

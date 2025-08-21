@@ -40,6 +40,9 @@ class UrlEncoderPage extends HookConsumerWidget {
     return SizedBox(
       height: MediaQuery.of(context).size.height - kToolbarHeight,
       child: ListView(
+        physics: const ClampingScrollPhysics(),
+        primary: false,
+        shrinkWrap: true,
         children: [
           Container(
             margin: const EdgeInsets.all(8.0),
@@ -47,46 +50,33 @@ class UrlEncoderPage extends HookConsumerWidget {
               headline: Text("configuration".tr()),
               child: Column(
                 children: [
-                  YaruTile(
+                  ListTile(
                     enabled: true,
                     leading: const Icon(Icons.compare_arrows_sharp),
-                    trailing: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(StringTranslateExtension("conversion").tr()),
-                              Text(StringTranslateExtension("conversion_mode").tr()),
-                            ],
-                          ),
-                          DropdownButton<ConversionMode>(
-                            value: ref.watch(conversionModeProvider),
-                            items: getDropdownMenuItems<ConversionMode>(
-                                ConversionMode.values),
-                            onChanged: (selected) {
-                              ref.read(conversionModeProvider.notifier).state =
-                                  selected!;
-                            },
-                          ),
-                        ],
-                      ),
+                    title: Text(StringTranslateExtension("conversion").tr()),
+                    subtitle: Text(StringTranslateExtension("conversion_mode").tr()),
+                    trailing: DropdownButton<ConversionMode>(
+                      value: ref.watch(conversionModeProvider),
+                      items: getDropdownMenuItems<ConversionMode>(
+                          ConversionMode.values),
+                      onChanged: (selected) {
+                        ref.read(conversionModeProvider.notifier).state =
+                            selected!;
+                      },
                     ),
                   ),
                 ],
               ),
             ),
           ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height / 1.2,
-            child: IOEditor(
-              inputController: inputController,
-              usesCodeControllers: false,
-              outputController: outputController,
-              isVerticalLayout: true,
-            ),
+          IOEditor(
+            inputController: inputController,
+            usesCodeControllers: false,
+            outputController: outputController,
+            singleScroll: true,
+            useExpansionPanels: true,
+            inputInitiallyExpanded: true,
+            outputInitiallyExpanded: true,
           ),
         ],
       ),

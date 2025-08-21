@@ -49,66 +49,43 @@ class JsonToClassConverterPage extends HookConsumerWidget {
               headline: Text("configuration".tr()),
               child: Column(
                 children: [
-                  YaruTile(
-                    enabled: true,
+                  ListTile(
                     leading: const Icon(
                       Icons.title,
                       size: 25,
                     ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Text(
-                            "class_name".tr(),
-                            style: const TextStyle(fontSize: 18),
-                          ),
+                    title: Text("class_name".tr()),
+                    trailing: SizedBox(
+                      width: MediaQuery.of(context).size.width / 10,
+                      child: TextFormField(
+                        textAlign: TextAlign.end,
+                        initialValue: ref.read(classNameProvider),
+                        onChanged: (value) {
+                          ref.read(classNameProvider.notifier).state = value;
+                        },
+                        decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.all(10),
+                          border: OutlineInputBorder(),
                         ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width / 10,
-                          child: TextFormField(
-                            textAlign: TextAlign.end,
-                            initialValue: ref.read(classNameProvider),
-                            onChanged: (value) {
-                              ref.read(classNameProvider.notifier).state =
-                                  value;
-                            },
-                            decoration: const InputDecoration(
-                              contentPadding: EdgeInsets.all(10),
-                              border: OutlineInputBorder(),
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
-                  YaruTile(
-                    enabled: true,
+                  ListTile(
                     leading: const Icon(
                       Icons.code,
                       size: 25,
                     ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Text(
-                            StringTranslateExtension("programming_language")
-                                .tr(),
-                            style: const TextStyle(fontSize: 18),
-                          ),
-                        ),
-                        DropdownButton<ProgrammingLanguage>(
-                            value: ref.watch(programmingLanguageProvider),
-                            items: getDropdownMenuItems<ProgrammingLanguage>(
-                                ProgrammingLanguage.values),
-                            onChanged: (selected) => ref
-                                .read(programmingLanguageProvider.notifier)
-                                .state = selected!),
-                      ],
+                    title: Text(
+                      StringTranslateExtension("programming_language").tr(),
+                      style: const TextStyle(fontSize: 18),
                     ),
+                    trailing: DropdownButton<ProgrammingLanguage>(
+                        value: ref.watch(programmingLanguageProvider),
+                        items: getDropdownMenuItems<ProgrammingLanguage>(
+                            ProgrammingLanguage.values),
+                        onChanged: (selected) => ref
+                            .read(programmingLanguageProvider.notifier)
+                            .state = selected!),
                   ),
                 ],
               ),

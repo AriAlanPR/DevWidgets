@@ -47,60 +47,32 @@ class Base64TextEncoderPage extends HookConsumerWidget {
               headline: Text(StringTranslateExtension("configuration").tr()),
               child: Column(
                 children: [
-                  YaruTile(
-                    enabled: true,
+                  ListTile(
                     leading: const Icon(Icons.compare_arrows_sharp),
-                    trailing: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(StringTranslateExtension("conversion").tr()),
-                              Text(StringTranslateExtension("conversion_mode").tr()),
-                            ],
-                          ),
-                          DropdownButton<ConversionMode>(
-                            value: ref.watch(conversionModeProvider),
-                            items: getDropdownMenuItems<ConversionMode>(
-                                ConversionMode.values),
-                            onChanged: (selected) {
-                              ref.read(conversionModeProvider.notifier).state =
-                                  selected!;
-                            },
-                          ),
-                        ],
-                      ),
+                    title: Text(StringTranslateExtension("conversion").tr()),
+                    subtitle: Text(StringTranslateExtension("conversion_mode").tr()),
+                    trailing: DropdownButton<ConversionMode>(
+                      value: ref.watch(conversionModeProvider),
+                      items: getDropdownMenuItems<ConversionMode>(
+                          ConversionMode.values),
+                      onChanged: (selected) {
+                        ref.read(conversionModeProvider.notifier).state =
+                            selected!;
+                      },
                     ),
                   ),
-                  YaruTile(
-                    enabled: true,
+                  ListTile(
                     leading: const Icon(Icons.grid_3x3),
-                    trailing: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(StringTranslateExtension("encoding").tr()),
-                              Text(StringTranslateExtension("encoding_description").tr()),
-                            ],
-                          ),
-                          DropdownButton<Base64EncodingType>(
-                            value: ref.watch(encodingTypeProvider),
-                            items: getDropdownMenuItems<Base64EncodingType>(
-                                Base64EncodingType.values),
-                            onChanged: (selected) {
-                              ref.read(encodingTypeProvider.notifier).state =
-                                  selected!;
-                            },
-                          ),
-                        ],
-                      ),
+                    title: Text(StringTranslateExtension("encoding").tr()),
+                    subtitle: Text(StringTranslateExtension("encoding_description").tr()),
+                    trailing: DropdownButton<Base64EncodingType>(
+                      value: ref.watch(encodingTypeProvider),
+                      items: getDropdownMenuItems<Base64EncodingType>(
+                          Base64EncodingType.values),
+                      onChanged: (selected) {
+                        ref.read(encodingTypeProvider.notifier).state =
+                            selected!;
+                      },
                     ),
                   ),
                 ],

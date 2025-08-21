@@ -50,33 +50,18 @@ class TextEscapePage extends HookConsumerWidget {
               headline: Text(StringTranslateExtension("configuration").tr()),
               child: Column(
                 children: [
-                  YaruTile(
-                    enabled: true,
+                  ListTile(
                     leading: const Icon(Icons.compare_arrows_sharp),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(StringTranslateExtension("conversion").tr()),
-                              Text("conversion_mode".tr()),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        DropdownButton<EscapeConversionMode>(
-                          value: ref.watch(escapeConversionModeProvider),
-                          items: getDropdownMenuItems<EscapeConversionMode>(
-                              EscapeConversionMode.values),
-                          onChanged: (selected) {
-                            ref.read(escapeConversionModeProvider.notifier)
-                              .state = selected ?? EscapeConversionMode.escape;
-                          },
-                        ),
-                      ],
+                    title: Text(StringTranslateExtension("conversion").tr()),
+                    subtitle: Text("conversion_mode".tr()),
+                    trailing: DropdownButton<EscapeConversionMode>(
+                      value: ref.watch(escapeConversionModeProvider),
+                      items: getDropdownMenuItems<EscapeConversionMode>(
+                          EscapeConversionMode.values),
+                      onChanged: (selected) {
+                        ref.read(escapeConversionModeProvider.notifier).state =
+                            selected ?? EscapeConversionMode.escape;
+                      },
                     ),
                   )
                 ],

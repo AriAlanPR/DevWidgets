@@ -32,72 +32,52 @@ class CpfCnpjGeneratorPage extends HookConsumerWidget {
               headline: Text(StringTranslateExtension("configuration").tr()),
               child: Column(
                 children: [
-                  YaruTile(
-                    enabled: true,
+                  ListTile(
                     leading: const Icon(Icons.more_horiz),
-                    trailing: Row(
-                      // Constrain row to its intrinsic width to avoid infinite constraints
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Text("format".tr()),
-                        ),
-                        Switch(
-                          onChanged: (value) => ref
-                              .read(isFormattedProvider.notifier)
-                              .state = value,
-                          value: ref.watch(isFormattedProvider),
-                        ),
-                      ],
+                    title: Text("format".tr()),
+                    trailing: Switch(
+                      onChanged: (value) => ref
+                          .read(isFormattedProvider.notifier)
+                          .state = value,
+                      value: ref.watch(isFormattedProvider),
                     ),
                   ),
-                  YaruTile(
-                    enabled: true,
+                  ListTile(
                     leading: const Icon(Icons.format_list_numbered),
+                    title: Text(StringTranslateExtension("amount").tr()),
                     trailing: Row(
-                      // Constrain row to its intrinsic width to avoid infinite constraints
+                      // Keep controls compact within available space
                       mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Text(StringTranslateExtension("amount").tr()),
+                        SizedBox(
+                          width: 100,
+                          child: TextFormField(
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                            textAlign: TextAlign.end,
+                            initialValue:
+                                ref.watch(amountProvider).toString(),
+                            onChanged: (value) {
+                              ref.read(amountProvider.notifier).state =
+                                  int.parse(value);
+                            },
+                            decoration: const InputDecoration(
+                              contentPadding: EdgeInsets.all(10),
+                              border: OutlineInputBorder(),
+                            ),
+                          ),
                         ),
-                        Row(
-                          // Keep controls compact within available space
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            SizedBox(
-                              width: 100,
-                              child: TextFormField(
-                                keyboardType: TextInputType.number,
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.digitsOnly
-                                ],
-                                textAlign: TextAlign.end,
-                                initialValue:
-                                    ref.watch(amountProvider).toString(),
-                                onChanged: (value) {
-                                  ref.read(amountProvider.notifier).state =
-                                      int.parse(value);
-                                },
-                                decoration: const InputDecoration(
-                                  contentPadding: EdgeInsets.all(10),
-                                  border: OutlineInputBorder(),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            ElevatedButton(
-                              onPressed: () => ref
-                                  .read(cpfCnpjGeneratorProvider.notifier)
-                                  .generate(mode),
-                              child: Text(
-                                  StringTranslateExtension("generate")
-                                      .tr()),
-                            ),
-                          ],
+                        const SizedBox(width: 8),
+                        ElevatedButton(
+                          onPressed: () => ref
+                              .read(cpfCnpjGeneratorProvider.notifier)
+                              .generate(mode),
+                          child: Text(
+                              StringTranslateExtension("generate")
+                                  .tr()),
                         ),
                       ],
                     ),

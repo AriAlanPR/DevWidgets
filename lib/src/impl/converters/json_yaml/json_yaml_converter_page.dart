@@ -57,59 +57,41 @@ class JsonYamlConverterPage extends HookConsumerWidget {
               headline: Text("configuration".tr()),
               child: Column(
                 children: [
-                  YaruTile(
-                    enabled: true,
+                  ListTile(
                     leading: const Icon(
                       Icons.compare_arrows_sharp,
                       size: 25,
                     ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Text(
-                            "conversion_type".tr(),
-                            style: const TextStyle(fontSize: 18),
-                          ),
-                        ),
-                        DropdownButton<JsonYamlConversionType>(
-                            value: ref.watch(conversionTypeProvider),
-                            items: getDropdownMenuItems<JsonYamlConversionType>(
-                                JsonYamlConversionType.values),
-                            onChanged: (selected) => ref
-                                .watch(conversionTypeProvider.notifier)
-                                .state = selected!),
-                      ],
+                    title: Text(
+                      "conversion_type".tr(),
+                      style: const TextStyle(fontSize: 18),
                     ),
+                    trailing: DropdownButton<JsonYamlConversionType>(
+                        value: ref.watch(conversionTypeProvider),
+                        items: getDropdownMenuItems<JsonYamlConversionType>(
+                            JsonYamlConversionType.values),
+                        onChanged: (selected) => ref
+                            .watch(conversionTypeProvider.notifier)
+                            .state = selected!),
                   ),
                   Visibility(
                     visible: ref.watch(conversionTypeProvider) ==
                         JsonYamlConversionType.yamlToJson,
                     child: Column(
                       children: [
-                        YaruTile(
-                          enabled: true,
+                        ListTile(
                           leading: const Icon(Icons.arrow_right_alt),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: Text(
-                                  "indentation".tr(),
-                                  style: const TextStyle(fontSize: 18),
-                                ),
-                              ),
-                              DropdownButton<Indentation>(
-                                  value: ref.watch(indentationProvider),
-                                  items: getDropdownMenuItems<Indentation>(
-                                      Indentation.values),
-                                  onChanged: (selected) => ref
-                                      .read(indentationProvider.notifier)
-                                      .state = selected!),
-                            ],
+                          title: Text(
+                            "indentation".tr(),
+                            style: const TextStyle(fontSize: 18),
                           ),
+                          trailing: DropdownButton<Indentation>(
+                              value: ref.watch(indentationProvider),
+                              items: getDropdownMenuItems<Indentation>(
+                                  Indentation.values),
+                              onChanged: (selected) => ref
+                                  .read(indentationProvider.notifier)
+                                  .state = selected!),
                         ),
                       ],
                     ),
@@ -118,49 +100,32 @@ class JsonYamlConverterPage extends HookConsumerWidget {
                       visible: ref.watch(conversionTypeProvider) ==
                           JsonYamlConversionType.jsonToYaml,
                       child: Column(children: [
-                        YaruTile(
-                          enabled: true,
+                        ListTile(
                           leading: const Icon(Icons.arrow_right_alt),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: Text(
-                                  "yaml_style".tr(),
-                                  style: const TextStyle(fontSize: 18),
-                                ),
-                              ),
-                              DropdownButton<YamlStyle>(
-                                  value: ref.watch(yamlStyleProvider),
-                                  items: getYamlStyleDropdownMenuItems(),
-                                  onChanged: (selected) => ref
-                                      .read(yamlStyleProvider.notifier)
-                                      .state = selected!),
-                            ],
-                          ),
-                        ),
-                      ])),
-                  YaruTile(
-                    enabled: true,
-                    leading: const Icon(Icons.sort_by_alpha),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Text(
-                            "sort_properties_alphabetically".tr(),
+                          title: Text(
+                            "yaml_style".tr(),
                             style: const TextStyle(fontSize: 18),
                           ),
+                          trailing: DropdownButton<YamlStyle>(
+                              value: ref.watch(yamlStyleProvider),
+                              items: getYamlStyleDropdownMenuItems(),
+                              onChanged: (selected) => ref
+                                  .read(yamlStyleProvider.notifier)
+                                  .state = selected!),
                         ),
-                        Switch(
-                          value: ref.watch(sortAlphabeticallyProvider),
-                          onChanged: (value) => ref
-                              .read(sortAlphabeticallyProvider.notifier)
-                              .state = value,
-                        ),
-                      ],
+                      ])),
+                  ListTile(
+                    enabled: true,
+                    leading: const Icon(Icons.sort_by_alpha),
+                    title: Text(
+                      "sort_properties_alphabetically".tr(),
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                    trailing: Switch(
+                      value: ref.watch(sortAlphabeticallyProvider),
+                      onChanged: (value) => ref
+                          .read(sortAlphabeticallyProvider.notifier)
+                          .state = value,
                     ),
                   )
                 ],

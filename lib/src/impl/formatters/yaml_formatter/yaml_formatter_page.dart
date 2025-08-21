@@ -52,47 +52,24 @@ class YamlFormatterPage extends HookConsumerWidget {
               headline: Text("configuration".tr()),
               child: Column(
                 children: [
-                  YaruTile(
-                    enabled: true,
+                  ListTile(
                     leading: const Icon(Icons.arrow_right_alt),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Text(
-                            "yaml_style".tr(),
-                            style: const TextStyle(fontSize: 18),
-                          ),
-                        ),
-                        DropdownButton<YamlStyle>(
-                            value: ref.watch(yamlStyleProvider),
-                            items: getYamlStyleDropdownMenuItems(),
-                            onChanged: (selected) => ref
-                                .read(yamlStyleProvider.notifier)
-                                .state = selected!),
-                      ],
-                    ),
+                    title: Text("yaml_style".tr()),
+                    trailing: DropdownButton<YamlStyle>(
+                        value: ref.watch(yamlStyleProvider),
+                        items: getYamlStyleDropdownMenuItems(),
+                        onChanged: (selected) => ref
+                            .read(yamlStyleProvider.notifier)
+                            .state = selected!),
                   ),
-                  YaruTile(
-                    enabled: true,
+                  ListTile(
                     leading: const Icon(Icons.sort_by_alpha),
-                    trailing: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Text(
-                            "sort_yaml_properties_alphabetically".tr(),
-                            style: const TextStyle(fontSize: 18),
-                          ),
-                        ),
-                        Switch(
-                          value: ref.watch(sortAlphabeticallyProvider),
-                          onChanged: (value) => ref
-                              .read(sortAlphabeticallyProvider.notifier)
-                              .state = value,
-                        ),
-                      ],
+                    title: Text("sort_yaml_properties_alphabetically".tr()),
+                    trailing: Switch(
+                      value: ref.watch(sortAlphabeticallyProvider),
+                      onChanged: (value) => ref
+                          .read(sortAlphabeticallyProvider.notifier)
+                          .state = value,
                     ),
                   )
                 ],

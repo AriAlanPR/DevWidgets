@@ -52,30 +52,19 @@ class SqlFormatterPage extends HookConsumerWidget {
               headline: Text("configuration".tr()),
               child: Column(
                 children: [
-                  YaruTile(
-                    enabled: true,
+                  ListTile(
                     leading: const Icon(
                       Icons.code,
                       size: 25,
                     ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Text(
-                            "dialect".tr(),
-                            style: const TextStyle(fontSize: 18),
-                          ),
-                        ),
-                        DropdownButton<SqlDialect>(
-                            value: ref.watch(sqlDialectProvider),
-                            items: getDropdownMenuItems<SqlDialect>(
-                                SqlDialect.values),
-                            onChanged: (selected) => ref
-                                .read(sqlDialectProvider.notifier)
-                                .state = selected!),
-                      ],
+                    title: Text("dialect".tr()),
+                    trailing: DropdownButton<SqlDialect>(
+                      value: ref.watch(sqlDialectProvider),
+                      items:
+                          getDropdownMenuItems<SqlDialect>(SqlDialect.values),
+                      onChanged: (selected) => ref
+                          .read(sqlDialectProvider.notifier)
+                          .state = selected!,
                     ),
                   ),
                 ],

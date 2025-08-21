@@ -149,11 +149,14 @@ class TextDiffPage extends HookConsumerWidget {
                 context: context,
                 builder: (context) {
                   return AlertDialog(
-                    title: YaruTile(
-                      enabled: true,
-                      trailing: const Icon(Icons.close),
+                    title: ListTile(
+                      contentPadding: EdgeInsets.zero,
                       title: Text(
                         "difference".tr(),
+                      ),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () => Navigator.of(context).pop(),
                       ),
                     ),
                     content: _Diff(settings: settings, isDialog: true),

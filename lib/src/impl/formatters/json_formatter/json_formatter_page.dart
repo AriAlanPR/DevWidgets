@@ -52,48 +52,26 @@ class JsonFormatterPage extends HookConsumerWidget {
               headline: Text(StringTranslateExtension("configuration").tr()),
               child: Column(
                 children: [
-                  YaruTile(
-                    enabled: true,
+                  ListTile(
                     leading: const Icon(Icons.arrow_right_alt),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Text(
-                            "indentation".tr(),
-                            style: const TextStyle(fontSize: 18),
-                          ),
-                        ),
-                        DropdownButton<Indentation>(
-                            value: ref.watch(indentationProvider),
-                            items: getDropdownMenuItems<Indentation>(
-                                Indentation.values),
-                            onChanged: (selected) => ref
-                                .read(indentationProvider.notifier)
-                                .state = selected!),
-                      ],
-                    ),
+                    title: Text("indentation".tr()),
+                    subtitle: const Text(""),
+                    trailing: DropdownButton<Indentation>(
+                        value: ref.watch(indentationProvider),
+                        items: getDropdownMenuItems<Indentation>(
+                            Indentation.values),
+                        onChanged: (selected) => ref
+                            .read(indentationProvider.notifier)
+                            .state = selected!),
                   ),
-                  YaruTile(
-                    enabled: true,
+                  ListTile(
                     leading: const Icon(Icons.sort_by_alpha),
-                    trailing: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Text(
-                            "sort_json_properties_alphabetically".tr(),
-                            style: const TextStyle(fontSize: 18),
-                          ),
-                        ),
-                        Switch(
-                          value: ref.watch(sortAlphabeticallyProvider),
-                          onChanged: (value) => ref
-                              .read(sortAlphabeticallyProvider.notifier)
-                              .state = value,
-                        ),
-                      ],
+                    title: Text("sort_json_properties_alphabetically".tr()),
+                    trailing: Switch(
+                      value: ref.watch(sortAlphabeticallyProvider),
+                      onChanged: (value) => ref
+                          .read(sortAlphabeticallyProvider.notifier)
+                          .state = value,
                     ),
                   )
                 ],

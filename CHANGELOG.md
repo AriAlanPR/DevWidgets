@@ -2,6 +2,36 @@
 
 All notable changes to this fork will be documented in this file.
 
+## [0.1.1] - 2025-08-21
+
+### Changes
+
+- Standardized configuration rows: replaced `YaruTile` with `ListTile` to improve visual consistency and avoid constraint issues on web/desktop.
+- Dialog titles: replaced `YaruTile`-based titles with a compact `ListTile` + close button in the Text Diff dialog.
+
+### Updated files
+
+- `lib/src/impl/formatters/sql_formatter/sql_formatter_page.dart`
+- `lib/src/impl/text/text_diff/text_diff_page.dart`
+- `lib/src/impl/generators/uuid/uuid_generator_page.dart`
+- `lib/src/impl/generators/lipsum/lipsum_generator_page.dart`
+- `lib/src/impl/brazil/cpf_cnpj/cpf_cnpj_generator_page.dart`
+- `lib/src/impl/converters/json_to_class/json_to_class_converter_page.dart`
+- `lib/src/impl/converters/json_yaml/json_yaml_converter_page.dart`
+
+### Linux packaging
+
+- New AppStream metainfo: `mx.com.digicodev.DevWidgets.metainfo.xml`
+- New desktop file: `mx.com.digicodev.DevWidgets.desktop`
+- New Flatpak manifest: `mx.com.digicodev.yml`
+- `linux/CMakeLists.txt`: updated `APPLICATION_ID` to `mx.com.digicodev.DevWidgets`
+- Removed old metainfo: `br.com.barros.DevWidgets.metainfo.xml`
+
+### Notes
+
+- No logic changes; existing providers and behavior remain the same. The new layout keeps controls compact and stable.
+- Dense forms (e.g., `json_to_sql_converter_options.dart`) and app Settings (`settings_page.dart`) will be evaluated separately to preserve ergonomics.
+
 ## [0.1.0] - 2025-08-21
 
 ### Highlights

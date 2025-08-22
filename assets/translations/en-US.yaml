@@ -193,3 +193,7 @@ yaml_formatter: YAML Formatter
 yaml_formatter_description: Format and sort YAML data
 yaml_formatter_short_title: YAML
 yaml_style: YAML Style
+open: Open
+nothing_to_download: Nothing to download. Please load or generate an image first.
+saved_image_to: "Saved image to: {path}"
+failed_to_save_image: "Failed to save image: {error}"

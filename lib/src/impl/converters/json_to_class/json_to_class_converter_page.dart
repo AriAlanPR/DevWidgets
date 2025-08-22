@@ -80,12 +80,12 @@ class JsonToClassConverterPage extends HookConsumerWidget {
                       style: const TextStyle(fontSize: 18),
                     ),
                     trailing: DropdownButton<ProgrammingLanguage>(
-                        value: ref.watch(programmingLanguageProvider),
-                        items: getDropdownMenuItems<ProgrammingLanguage>(
-                            ProgrammingLanguage.values),
-                        onChanged: (selected) => ref
-                            .read(programmingLanguageProvider.notifier)
-                            .state = selected!),
+                      value: ref.watch(programmingLanguageProvider),
+                      items: getDropdownMenuItems<ProgrammingLanguage>(
+                          ProgrammingLanguage.values),
+                      onChanged: (selected) => ref
+                          .read(programmingLanguageProvider.notifier)
+                          .state = selected!),
                   ),
                 ],
               ),

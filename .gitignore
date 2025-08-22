@@ -53,3 +53,11 @@ pubspec.lock
 build-dir/
 DevWidgets-Linux-Portable.tar.gz
 .flatpak-builder/
+
+# iOS build related
+ios/build/XCBuildData/
+ios/build/
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh

@@ -10,7 +10,7 @@ Develop your improvement and open a Pull Request explaining it! Tell us what you
 You can find [here](./ROADMAP.md) the current roadmap. 
 But new tools are more than welcome! Don't forget to create your Tool as a implementation of the Tool class.
 
-## Internalization
+## Localization
 Translate DevWidgets to your language! You can find the map of the translations [here](./assets/templates/translation.yaml).
 
 ## Tests

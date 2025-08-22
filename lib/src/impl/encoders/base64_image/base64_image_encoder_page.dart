@@ -17,14 +17,24 @@ class Base64ImageEncoderPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final inputController = useTextEditingController();
+    final hasImage = ref.watch(outputImageProvider).isNotEmpty;
 
     useEffect(() {
       Future(() {
         inputController.text = ref.watch(inputTextProvider);
         inputController.addListener(() {
-          final bytes =
-              const Base64Decoder().convert(inputController.text.trim());
-          ref.read(outputImageProvider.notifier).state = bytes;
+          try {
+            final text = inputController.text.trim();
+            if (text.isEmpty) {
+              ref.read(outputImageProvider.notifier).state = Uint8List(0);
+              return;
+            }
+            final bytes = const Base64Decoder().convert(text);
+            ref.read(outputImageProvider.notifier).state = bytes;
+          } catch (_) {
+            // If invalid base64, clear the image output silently.
+            ref.read(outputImageProvider.notifier).state = Uint8List(0);
+          }
         });
       });
       return;
@@ -58,7 +68,7 @@ class Base64ImageEncoderPage extends HookConsumerWidget {
                         Visibility(
                           visible: !kIsWeb,
                           child: ElevatedButton.icon(
-                              onPressed: () => downloadImage(context, ref),
+                              onPressed: hasImage ? () => downloadImage(context, ref) : null,
                               icon: const Icon(Icons.download),
                               label: Text("download_image".tr())),
                         )
@@ -82,3 +92,4 @@ class Base64ImageEncoderPage extends HookConsumerWidget {
         ));
   }
 }
+

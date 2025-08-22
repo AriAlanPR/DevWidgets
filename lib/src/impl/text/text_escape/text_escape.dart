@@ -93,7 +93,9 @@ bool _textMatchAtIndex(String data, String test, int startIndex) {
     return false;
   }
 
-  if (data.length < test.length) {
+  // Ensure the slice [startIndex, startIndex + test.length) is within bounds.
+  // This prevents RangeError when matching close to the end of the string.
+  if (startIndex < 0 || (startIndex + test.length) > data.length) {
     return false;
   }
 

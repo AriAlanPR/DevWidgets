@@ -27,32 +27,64 @@ class InputEditor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // When a fixed height is provided, prefer a non-scrollable Column to avoid
+    // nested ListView interactions inside split views that can hide a pane.
+    final usesFixedHeight = height != null;
+
+    final content = usesFixedHeight
+        ? Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              inputController != null
+                  ? InputToolBar(
+                      inputController: inputController!,
+                      toolbarTitle: toolbarTitle)
+                  : const SizedBox.shrink(),
+              Container(
+                width: width ?? double.infinity,
+                margin: const EdgeInsets.all(8.0),
+                height: height ??
+                    (isVerticalLayout
+                        ? MediaQuery.of(context).size.height / 3.5
+                        : MediaQuery.of(context).size.height / 1.5),
+                child: CodeEditorWrapper(
+                    onChanged: onChanged,
+                    minLines: minLines,
+                    usesCodeControllers: usesCodeControllers,
+                    textEditingController: inputController),
+              ),
+            ],
+          )
+        : ListView(
+            physics: const ClampingScrollPhysics(),
+            primary: false,
+            children: [
+              inputController != null
+                  ? InputToolBar(
+                      inputController: inputController!,
+                      toolbarTitle: toolbarTitle)
+                  : const SizedBox.shrink(),
+              Container(
+                width: width ?? double.infinity,
+                margin: const EdgeInsets.all(8.0),
+                height: height ??
+                    (isVerticalLayout
+                        ? MediaQuery.of(context).size.height / 3.5
+                        : MediaQuery.of(context).size.height / 1.5),
+                child: CodeEditorWrapper(
+                    onChanged: onChanged,
+                    minLines: minLines,
+                    usesCodeControllers: usesCodeControllers,
+                    textEditingController: inputController),
+              )
+            ],
+          );
+
     return Visibility(
       visible: inputChild == null,
       replacement: inputChild ?? const SizedBox.shrink(),
-      child: ListView(
-        physics: const ClampingScrollPhysics(),
-        primary: false,
-        children: [
-          inputController != null
-              ? InputToolBar(
-                  inputController: inputController!, toolbarTitle: toolbarTitle)
-              : const SizedBox.shrink(),
-          Container(
-            width: width ?? double.infinity,
-            margin: const EdgeInsets.all(8.0),
-            height: height ??
-                (isVerticalLayout
-                    ? MediaQuery.of(context).size.height / 3.5
-                    : MediaQuery.of(context).size.height / 1.5),
-            child: CodeEditorWrapper(
-                onChanged: onChanged,
-                minLines: minLines,
-                usesCodeControllers: usesCodeControllers,
-                textEditingController: inputController),
-          )
-        ],
-      ),
+      child: content,
     );
   }
 }

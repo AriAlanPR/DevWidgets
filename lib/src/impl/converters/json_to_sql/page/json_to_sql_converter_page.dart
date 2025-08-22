@@ -83,6 +83,6 @@ class TabbedTab extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    return Tab(icon: Icon(icon), text: "input".tr());
+    return Tab(icon: Icon(icon), text: text.tr());
   }  
 }

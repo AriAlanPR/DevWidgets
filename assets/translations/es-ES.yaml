@@ -197,3 +197,5 @@ open: Abrir
 nothing_to_download: Nada para descargar. Por favor carga o genera una imagen primero.
 saved_image_to: "Imagen guardada en: {path}"
 failed_to_save_image: "Error al guardar la imagen: {error}"
+file_not_text: "El archivo seleccionado '{name}' no es un archivo de texto (UTF-8)."
+failed_to_read_file: "Error al leer el archivo: {error}"

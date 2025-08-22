@@ -361,12 +361,15 @@ Widget _buildInvalidJsonData(BuildContext context) {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-              child: Text(
-                "json_to_sql_invalid_json_data".tr(),
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
+            padding: const EdgeInsets.only(top: 8.0, left: 48.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  "json_to_sql_invalid_json_data".tr(),
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ],
             ),
           ),
         ],

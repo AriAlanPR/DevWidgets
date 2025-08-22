@@ -2,6 +2,31 @@
 
 All notable changes to this fork will be documented in this file.
 
+## [0.1.2] - 2025-08-22
+
+### Fixed
+
+- Non-text file uploads in the input editor no longer crash the app when trying to decode binary data as UTF-8.
+  - Web: use `utf8.decode(bytes)` with `try/catch` for `FormatException`.
+  - Desktop: keep `readAsString()` with `try/catch` for `FileSystemException`.
+  - On error, show localized SnackBars and do not modify the input content.
+  - Added `if (!context.mounted) return;` guard before showing SnackBars.
+
+### Changes
+
+- Localization: added new keys and replaced hardcoded strings related to the Base64 Image encoder.
+  - Keys added: `open`, `nothing_to_download`, `saved_image_to`, `failed_to_save_image`, `file_not_text`, `failed_to_read_file`.
+  - Updated translation files: `assets/translations/en-US.yaml`, `assets/translations/es-ES.yaml`.
+  - Updated translation template for contributors: `assets/templates/translation.yaml`.
+
+### Updated files
+
+- `lib/src/impl/widgets/io_editor/input_toolbar.dart`
+- `lib/src/impl/encoders/base64_image/base64_image_encoder_providers.dart`
+- `assets/translations/en-US.yaml`
+- `assets/translations/es-ES.yaml`
+- `assets/templates/translation.yaml`
+
 ## [0.1.1] - 2025-08-21
 
 ### Changes

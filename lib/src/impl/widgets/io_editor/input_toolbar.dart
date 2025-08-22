@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dev_widgets/src/impl/helpers.dart';
 import 'package:dev_widgets/src/impl/widgets/io_editor/io_toolbar.dart';
 import 'package:file_picker/file_picker.dart';
@@ -37,12 +39,35 @@ class InputToolBar extends StatelessWidget {
         onPressed: () async {
           var result = await FilePicker.platform.pickFiles();
           if (result != null) {
-            if (kIsWeb) {
-              inputController.text =
-                  String.fromCharCodes(result.files.first.bytes!);
-            } else {
-              final file = io.File(result.files.single.path!);
-              inputController.text = await file.readAsString();
+            final picked = result.files.single;
+            final fileName = picked.name;
+            try {
+              if (kIsWeb) {
+                final bytes = picked.bytes;
+                if (bytes == null) return;
+                // Try strict UTF-8 decode; throws FormatException if not text
+                final decoded = utf8.decode(bytes);
+                inputController.text = decoded;
+              } else {
+                final file = io.File(picked.path!);
+                // readAsString will throw for non-text encodings
+                inputController.text = await file.readAsString();
+              }
+            } on FormatException catch (_) {
+              if (!context.mounted) return;
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('file_not_text'.tr(namedArgs: {'name': fileName}))),
+              );
+            } on io.FileSystemException catch (_) {
+              if (!context.mounted) return;
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('file_not_text'.tr(namedArgs: {'name': fileName}))),
+              );
+            } catch (e) {
+              if (!context.mounted) return;
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('failed_to_read_file'.tr(namedArgs: {'error': e.toString()}))),
+              );
             }
           }
         },

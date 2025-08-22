@@ -197,3 +197,5 @@ open: Open
 nothing_to_download: Nothing to download. Please load or generate an image first.
 saved_image_to: "Saved image to: {path}"
 failed_to_save_image: "Failed to save image: {error}"
+file_not_text: "The selected file '{name}' is not a text file (UTF-8)."
+failed_to_read_file: "Failed to read file: {error}"

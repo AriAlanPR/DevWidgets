@@ -12,6 +12,15 @@ All notable changes to this fork will be documented in this file.
   - On error, show localized SnackBars and do not modify the input content.
   - Added `if (!context.mounted) return;` guard before showing SnackBars.
 
+#### Code editor
+
+- Prevented vertical overflow when content exceeds the fixed container height.
+  - In `lib/src/impl/widgets/io_editor/io_editor.dart`, set `expands: true` so the inner field scrolls instead of overflowing.
+- Multi‑digit line numbers no longer get hidden or wrap to multiple lines.
+  - In `lib/src/impl/widgets/io_editor/code_editor_wrapper.dart`, the gutter width is measured with `TextPainter`, reserving at least 4 digits and adding padding.
+  - Right‑aligned numbers and consistent gutter margin.
+  - Matching typography metrics between code and line numbers (same `TextStyle`, `textBaseline`, and `height`) to ensure vertical alignment.
+
 ### Changes
 
 - Localization: added new keys and replaced hardcoded strings related to the Base64 Image encoder.
@@ -26,6 +35,8 @@ All notable changes to this fork will be documented in this file.
 - `assets/translations/en-US.yaml`
 - `assets/translations/es-ES.yaml`
 - `assets/templates/translation.yaml`
+ - `lib/src/impl/widgets/io_editor/code_editor_wrapper.dart`
+ - `lib/src/impl/widgets/io_editor/io_editor.dart`
 
 ## [0.1.1] - 2025-08-21
 

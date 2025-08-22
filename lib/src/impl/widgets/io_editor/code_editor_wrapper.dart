@@ -25,23 +25,54 @@ class CodeEditorWrapper extends ConsumerWidget {
     final settings = ref.watch(settingsProvider);
 
     if (usesCodeControllers) {
+      // Build a shared text style to ensure code and line numbers have identical
+      // font metrics (height/baseline), preventing vertical misalignment.
+      final codeStyle = TextStyle(
+        fontFamily: settings.textEditorFontFamily,
+        fontSize: settings.textEditorFontSize,
+        color: Theme.of(context).textTheme.bodyMedium!.color,
+        inherit: false,
+        textBaseline: TextBaseline.alphabetic,
+        height: 1.3, // enforce consistent line height
+      );
+
+      // Use provided controller or a temporary one for rendering. We read the
+      // current line count to size the gutter so line numbers don't wrap.
+      final codeController =
+          (textEditingController ?? CodeController()) as CodeController;
+
+      // Measure required width using TextPainter to avoid wrapping/clipping.
+      final lineCount = codeController.text.split('\n').length;
+      final digitCount = lineCount.toString().length;
+      final reservedDigits = digitCount < 4 ? 4 : digitCount; // allow up to 9999
+      final sampleText = '8' * reservedDigits; // widest digit in most fonts
+      final painter = TextPainter(
+        text: TextSpan(text: sampleText, style: codeStyle),
+        maxLines: 1,
+        textDirection: Directionality.of(context),
+      )..layout();
+      final measured = painter.size.width;
+      final gutterWidth = measured + 24; // padding for breathing room
+
       return CodeTheme(
         data:
             CodeThemeData(styles: textEditorThemes[settings.textEditorTheme]!),
         child: CodeField(
           wrap: settings.textEditorWrap,
           lineNumbers: settings.textEditorDisplayLineNumbers,
-          textStyle: TextStyle(
-              fontFamily: settings.textEditorFontFamily,
-              fontSize: settings.textEditorFontSize,
-              color: Theme.of(context).textTheme.bodyMedium!.color,
-              inherit: false,
-              textBaseline: TextBaseline.alphabetic),
+          textStyle: codeStyle,
+          isDense: true,
+          lineNumberStyle: LineNumberStyle(
+            // same metrics as code text to align baselines
+            textStyle: codeStyle,
+            width: gutterWidth,
+            textAlign: TextAlign.right,
+            margin: 8,
+          ),
           readOnly: readOnly,
           expands: expands,
           onChanged: onChanged,
-          controller:
-              (textEditingController ?? CodeController()) as CodeController,
+          controller: codeController,
         ),
       );
     } else {

@@ -5,6 +5,7 @@ import 'package:dev_widgets/src/supported_locales.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:yaru/yaru.dart';
@@ -36,122 +37,104 @@ class _ApplicationSettings extends ConsumerWidget {
 
     return Container(
       margin: const EdgeInsets.all(8.0),
-      child: YaruSection(
+         child: YaruSection(
         headline: Text("application".tr()),
         child: Column(
           children: [
-            YaruTile(
-              enabled: true,
-              padding: const EdgeInsets.all(8.0),
+            ListTile(
               leading: const Icon(Icons.public),
-              trailing: Row(
+              title: Text(
+                "language".tr(),
+                style: const TextStyle(fontSize: 18),
+              ),
+              trailing: DropdownButton<Locale>(
+                value: context.locale,
+                onChanged: (value) {
+                  ref
+                      .read(settingsProvider.notifier)
+                      .setLocale(context, value ?? const Locale("en_US"));
+                },
+                items: _getLanguageDropdownMenuItems(),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.dark_mode),
+              title: Text(
+                "brightness".tr(),
+                style: const TextStyle(fontSize: 18),
+              ),
+              trailing: DropdownButton<ThemeMode>(
+                value: settings.themeMode,
+                items: [
+                  DropdownMenuItem(
+                    value: ThemeMode.system,
+                    child: Text("system".tr()),
+                  ),
+                  DropdownMenuItem(
+                    value: ThemeMode.light,
+                    child: Text("light".tr()),
+                  ),
+                  DropdownMenuItem(
+                    value: ThemeMode.dark,
+                    child: Text("dark".tr()),
+                  ),
+                ],
+                onChanged: (value) {
+                  ref.read(settingsProvider.notifier)
+                    .setThemeMode(value ?? ThemeMode.system);
+                },
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.accessibility),
+              title: Text(
+                "high_contrast".tr(),
+                style: const TextStyle(fontSize: 18),
+              ),
+              trailing: Switch(
+                onChanged: (bool value) {
+                  ref
+                      .read(settingsProvider.notifier)
+                      .setHighContrast(value);
+                },
+                value: settings.highContrast,
+              ),
+            ),
+            ListTile(
+              title: const SizedBox.shrink(),
+              leading: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    "language".tr(),
-                    style: const TextStyle(fontSize: 18),
-                  ),
+                  const Icon(Icons.brush, size: 18),
                   const SizedBox(width: 8),
-                  DropdownButton<Locale>(
-                      value: context.locale,
-                      onChanged: (value) {
-                        ref
-                            .read(settingsProvider.notifier)
-                            .setLocale(context, value ?? const Locale("en_US"));
-                      },
-                      items: _getLanguageDropdownMenuItems()),
-                ],
-              ),
-            ),
-            YaruTile(
-              enabled: true,
-              padding: const EdgeInsets.all(8.0),
-              leading: const Icon(Icons.dark_mode),
-              trailing: Row(
-                children: [
-                  Text(
-                    "brightness".tr(),
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                  const SizedBox(width: 8),
-                  DropdownButton<ThemeMode>(
-                      value: settings.themeMode,
-                      items: [
-                        DropdownMenuItem(
-                          value: ThemeMode.system,
-                          child: Text("system".tr()),
-                        ),
-                        DropdownMenuItem(
-                          value: ThemeMode.light,
-                          child: Text("light".tr()),
-                        ),
-                        DropdownMenuItem(
-                          value: ThemeMode.dark,
-                          child: Text("dark".tr()),
-                        ),
-                      ],
-                      onChanged: (value) {
-                        ref
-                            .read(settingsProvider.notifier)
-                            .setThemeMode(value ?? ThemeMode.system);
-                      }),
-                ],
-              ),
-            ),
-            YaruTile(
-              enabled: true,
-              padding: const EdgeInsets.all(8.0),
-              leading: const Icon(Icons.accessibility),
-              trailing: Row(
-                children: [
-                  Text(
-                    "high_contrast".tr(),
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                  const SizedBox(width: 8),
-                  Switch(
-                    onChanged: (bool value) {
-                      ref
-                          .read(settingsProvider.notifier)
-                          .setHighContrast(value);
-                    },
-                    value: settings.highContrast,
-                  ),
-                ],
-              ),
-            ),
-            YaruTile(
-              enabled: true,
-              padding: const EdgeInsets.all(8.0),
-              leading: const Icon(Icons.brush),
-              trailing: Row(
-                children: [
                   Text(
                     "primary_color".tr(),
                     style: const TextStyle(fontSize: 18),
                   ),
-                  const SizedBox(width: 8),
-                  SizedBox(
-                    width: 300,
-                    child: Wrap(
-                      crossAxisAlignment: WrapCrossAlignment.start,
-                      alignment: WrapAlignment.start,
-                      children: [
-                        for (var variant in YaruVariant.values)
-                          YaruColorDisk(
-                            onPressed: () {
-                              ref
-                                  .read(settingsProvider.notifier)
-                                  .setYaruVariant(variant);
-                            },
-                            color: variant.color,
-                            selected: settings.yaruVariant == variant,
-                          ),
-                      ],
-                    ),
-                  ),
                 ],
               ),
+              subtitle: Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.start,
+                  alignment: WrapAlignment.start,
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    for (var variant in YaruVariant.values)
+                      YaruColorDisk(
+                        onPressed: () {
+                          ref
+                              .read(settingsProvider.notifier)
+                              .setYaruVariant(variant);
+                        },
+                        color: variant.color,
+                        selected: settings.yaruVariant == variant,
+                      ),
+                  ],
+                ),
+              ),
+              trailing: const SizedBox.shrink(),
             ),
           ],
         ),
@@ -173,129 +156,129 @@ class _TextEditorSettings extends ConsumerWidget {
         headline: Text("text_editor".tr()),
         child: Column(
           children: [
-            YaruTile(
-              enabled: true,
-              padding: const EdgeInsets.all(8.0),
-              leading: const Icon(Icons.edit),
-              trailing: Row(
+            ListTile(
+              title: const SizedBox.shrink(),
+              leading: Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
+                  const Icon(Icons.edit, size: 18),
+                  const SizedBox(width: 8),
                   Text(
                     "theme".tr(),
                     style: const TextStyle(fontSize: 18),
                   ),
-                  const SizedBox(width: 8),
-                  DropdownButton<String?>(
-                      value: settings.textEditorTheme,
-                      items: _getTextEditorThemeDropdownMenuItems(),
-                      onChanged: (value) {
-                        ref
-                            .read(settingsProvider.notifier)
-                            .setTextEditorTheme(value ?? "vs");
-                      }),
                 ],
               ),
-            ),
-            YaruTile(
-              enabled: true,
-              padding: const EdgeInsets.all(8.0),
-              leading: const Icon(Icons.format_size),
-              trailing: Row(
-                children: [
-                  Text(
-                    "font_size".tr(),
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                  const SizedBox(width: 8),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 20,
-                    height: MediaQuery.of(context).size.height / 20,
-                    child: TextField(
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      controller: TextEditingController(
-                          text: settings.textEditorFontSize.toString()),
-                      decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.all(5),
+              trailing: DropdownButton<String?>(
+                value: settings.textEditorTheme,
+                items: _getTextEditorThemeDropdownMenuItems(),
+                onChanged: (value) {
+                  ref.read(settingsProvider.notifier)
+                    .setTextEditorTheme(value ?? "vs");
+                },
+              ),
+              subtitle: Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(6),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Theme.of(context).dividerColor.withValues(alpha: .4),
                       ),
-                      keyboardType:
-                          const TextInputType.numberWithOptions(decimal: true),
-                      onChanged: (value) {
-                        double? parsedValue = double.tryParse(value);
-                        if (parsedValue != null) {
-                          ref
-                              .read(settingsProvider.notifier)
-                              .setTextEditorFontSize(parsedValue);
-                        }
-                      },
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    padding: const EdgeInsets.all(8),
+                    child: HighlightView(
+                      'void main() {\n  final msg = "Hello";\n  print(msg);\n}',
+                      language: 'dart',
+                      theme: textEditorThemes[settings.textEditorTheme]!,
+                      textStyle: TextStyle(
+                        fontFamily: settings.textEditorFontFamily,
+                        fontSize: settings.textEditorFontSize,
+                        height: 1.3,
+                      ),
                     ),
                   ),
-                ],
+                ),
               ),
             ),
-            YaruTile(
-              enabled: true,
-              padding: const EdgeInsets.all(8.0),
+            ListTile(
+              leading: const Icon(Icons.format_size),
+              title: Text(
+                "font_size".tr(),
+                style: const TextStyle(fontSize: 18),
+              ),
+              trailing: SizedBox(
+                width: MediaQuery.of(context).size.width / 20,
+                height: MediaQuery.of(context).size.height / 20,
+                child: TextFormField(
+                  key: ValueKey(settings.textEditorFontSize),
+                  initialValue: settings.textEditorFontSize.toString(),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r'^[0-9]*\.?[0-9]*$'))
+                  ],
+                  decoration: const InputDecoration(
+                    contentPadding: EdgeInsets.all(5),
+                  ),
+                  textAlign: TextAlign.right,
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: true),
+                  onChanged: (value) {
+                    final parsed = double.tryParse(value);
+                    if (parsed != null) {
+                      ref
+                          .read(settingsProvider.notifier)
+                          .setTextEditorFontSize(parsed);
+                    }
+                  },
+                ),
+              ),
+            ),
+            ListTile(
               leading: const Icon(Icons.house),
-              trailing: Row(
-                children: [
-                  Text(
-                    "font_family".tr(),
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                  const SizedBox(width: 8),
-                  DropdownButton<String?>(
-                    value: settings.textEditorFontFamily,
-                    items: _getTextEditorFontFamilyDropdownMenuItems(),
-                    onChanged: (value) {
-                      ref
-                          .read(settingsProvider.notifier)
-                          .setTextEditorFontFamily(value ?? "Hack");
-                    },
-                  ),
-                ],
+              title: Text(
+                "font_family".tr(),
+                style: const TextStyle(fontSize: 18),
+              ),
+              trailing: DropdownButton<String?>(
+                value: settings.textEditorFontFamily,
+                items: _getTextEditorFontFamilyDropdownMenuItems(),
+                onChanged: (value) {
+                  ref
+                      .read(settingsProvider.notifier)
+                      .setTextEditorFontFamily(value ?? "Hack");
+                },
               ),
             ),
-            YaruTile(
-              enabled: true,
-              padding: const EdgeInsets.all(8.0),
+            ListTile(
               leading: const Icon(Icons.wrap_text),
-              trailing: Row(
-                children: [
-                  Text(
-                    "wrap_text".tr(),
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                  const SizedBox(width: 8),
-                  Switch(
-                    onChanged: (bool value) {
-                      ref
-                          .read(settingsProvider.notifier)
-                          .setTextEditorWrap(value);
-                    },
-                    value: settings.textEditorWrap,
-                  ),
-                ],
+              title: Text(
+                "wrap_text".tr(),
+                style: const TextStyle(fontSize: 18),
+              ),
+              trailing: Switch(
+                onChanged: (bool value) {
+                  ref
+                      .read(settingsProvider.notifier)
+                      .setTextEditorWrap(value);
+                },
+                value: settings.textEditorWrap,
               ),
             ),
-            YaruTile(
-              enabled: true,
-              padding: const EdgeInsets.all(8.0),
+            ListTile(
               leading: const Icon(Icons.format_list_numbered),
-              trailing: Row(
-                children: [
-                  Text(
-                    "display_line_numbers".tr(),
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                  const SizedBox(width: 8),
-                  Switch(
-                    onChanged: (bool value) {
-                      ref
-                          .read(settingsProvider.notifier)
-                          .setTextEditorDisplayLineNumbers(value);
-                    },
-                    value: settings.textEditorDisplayLineNumbers,
-                  ),
-                ],
+              title: Text(
+                "display_line_numbers".tr(),
+                style: const TextStyle(fontSize: 18),
+              ),
+              trailing: Switch(
+                onChanged: (bool value) {
+                  ref
+                      .read(settingsProvider.notifier)
+                      .setTextEditorDisplayLineNumbers(value);
+                },
+                value: settings.textEditorDisplayLineNumbers,
               ),
             ),
           ],
@@ -324,25 +307,13 @@ class _About extends ConsumerWidget {
                 behavior: HitTestBehavior.deferToChild,
                 onTap: () =>
                     showAboutDialog(context: context, useRootNavigator: false),
-                child: YaruTile(
-                  enabled: true,
-                  trailing: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            "licenses".tr(),
-                            style: const TextStyle(fontSize: 18),
-                          ),
-                          Text("licenses_description".tr()),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      const SizedBox.shrink(),
-                    ],
+                child: ListTile(
+                  title: Text(
+                    "licenses".tr(),
+                    style: const TextStyle(fontSize: 18),
                   ),
-                  padding: const EdgeInsets.all(8.0),
+                  subtitle: Text("licenses_description".tr()),
+                  trailing: const SizedBox.shrink(),
                   leading: const Icon(Icons.document_scanner),
                 ),
               ),
@@ -354,51 +325,28 @@ class _About extends ConsumerWidget {
                   await launchUrl(
                       Uri.parse("https://www.github.com/gumbarros/DevWidgets"));
                 },
-                child: YaruTile(
-                  enabled: true,
-                  trailing: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            "repository".tr(),
-                            style: const TextStyle(fontSize: 18),
-                          ),
-                          Text("repository_about".tr()),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      const SizedBox.shrink(),
-                    ],
+                child: ListTile(
+                  title: Text(
+                    "repository".tr(),
+                    style: const TextStyle(fontSize: 18),
                   ),
-                  padding: const EdgeInsets.all(8.0),
+                  subtitle: Text("repository_about".tr()),
+                  trailing: const SizedBox.shrink(),
                   leading: const Icon(Icons.code),
                 ),
               ),
             ),
-            YaruTile(
-              enabled: true,
-              trailing: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        "build_info".tr(),
-                        style: const TextStyle(fontSize: 18),
-                      ),
-                      buildInfo.when(
-                        loading: () => Text("..."),
-                        data: (data) => Text(data),
-                        error: (error, _) => Text(error.toString()),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  const SizedBox.shrink(),
-                ],
+            ListTile(
+              title: Text(
+                "build_info".tr(),
+                style: const TextStyle(fontSize: 18),
               ),
-              padding: const EdgeInsets.all(8.0),
+              subtitle: buildInfo.when(
+                loading: () => Text("..."),
+                data: (data) => Text(data),
+                error: (error, _) => Text(error.toString()),
+              ),
+              trailing: const SizedBox.shrink(),
               leading: const Icon(Icons.computer),
             ),
           ],

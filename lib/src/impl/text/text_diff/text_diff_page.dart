@@ -3,13 +3,11 @@ import 'package:dev_widgets/src/impl/settings/settings.dart';
 import 'package:dev_widgets/src/impl/settings/settings_provider.dart';
 import 'package:dev_widgets/src/impl/text/text_diff/text_diff_providers.dart';
 import 'package:dev_widgets/src/impl/widgets/io_editor/input_editor.dart';
-import 'package:dev_widgets/src/impl/widgets/multi_split_view_divider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:multi_split_view/multi_split_view.dart';
 import 'package:pretty_diff_text/pretty_diff_text.dart';
 import 'package:yaru/yaru.dart';
 
@@ -109,39 +107,30 @@ class TextDiffPage extends HookConsumerWidget {
             ),
           ),
           SizedBox(
-              height: MediaQuery.of(context).size.height / 2.5,
-              child: MultiSplitViewTheme(
-                data: MultiSplitViewThemeData(dividerThickness: 5),
-                child: MultiSplitView(
-                  dividerBuilder: (axis, index, resizable, dragging,
-                          highlighted, themeData) =>
-                      MultiSplitViewDivider(
-                          dragging: dragging, highlighted: highlighted),
-                  axis: Axis.horizontal,
-                  initialAreas: [
-                    Area(size: 0.5, min: 0.3),
-                    Area(size: 0.5, min: 0.3)
-                  ],
-                  builder: (context, area) {
-                    final index = area.index;
-                    if (index == 0) {
-                      return InputEditor(
-                          toolbarTitle: "old_text".tr(),
-                          inputController: oldTextController,
-                          minLines: 20,
-                          height: MediaQuery.of(context).size.height / 2.5,
-                          usesCodeControllers: false);
-                    } else {
-                      return InputEditor(
-                          toolbarTitle: "new_text".tr(),
-                          minLines: 20,
-                          inputController: newTextController,
-                          height: MediaQuery.of(context).size.height / 2.5,
-                          usesCodeControllers: false);
-                    }
-                  },
+            height: MediaQuery.of(context).size.height / 2.5,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  child: InputEditor(
+                      toolbarTitle: "old_text".tr(),
+                      inputController: oldTextController,
+                      minLines: 20,
+                      height: MediaQuery.of(context).size.height / 2.5,
+                      usesCodeControllers: false),
                 ),
-              )),
+                const VerticalDivider(width: 5),
+                Expanded(
+                  child: InputEditor(
+                      toolbarTitle: "new_text".tr(),
+                      minLines: 20,
+                      inputController: newTextController,
+                      height: MediaQuery.of(context).size.height / 2.5,
+                      usesCodeControllers: false),
+                ),
+              ],
+            ),
+          ),
           GestureDetector(
             onTap: () {
               showDialog(

@@ -32,29 +32,29 @@ class InputEditor extends StatelessWidget {
     final usesFixedHeight = height != null;
 
     final content = usesFixedHeight
-        ? Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              inputController != null
-                  ? InputToolBar(
+        ? SizedBox(
+            height: height,
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                if (inputController != null)
+                  InputToolBar(
                       inputController: inputController!,
-                      toolbarTitle: toolbarTitle)
-                  : const SizedBox.shrink(),
-              Container(
-                width: width ?? double.infinity,
-                margin: const EdgeInsets.all(8.0),
-                height: height ??
-                    (isVerticalLayout
-                        ? MediaQuery.of(context).size.height / 3.5
-                        : MediaQuery.of(context).size.height / 1.5),
-                child: CodeEditorWrapper(
-                    onChanged: onChanged,
-                    minLines: minLines,
-                    usesCodeControllers: usesCodeControllers,
-                    textEditingController: inputController),
-              ),
-            ],
+                      toolbarTitle: toolbarTitle),
+                Expanded(
+                  child: Container(
+                    width: width ?? double.infinity,
+                    margin: const EdgeInsets.all(8.0),
+                    child: CodeEditorWrapper(
+                        onChanged: onChanged,
+                        minLines: minLines,
+                        usesCodeControllers: usesCodeControllers,
+                        textEditingController: inputController),
+                  ),
+                ),
+              ],
+            ),
           )
         : ListView(
             physics: const ClampingScrollPhysics(),

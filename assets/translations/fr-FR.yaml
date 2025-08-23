@@ -167,8 +167,8 @@ timestamp_converter: Convertisseur de timestamp
 timestamp_converter_description: Convertir un timestamp en date lisible et vice versa
 two_spaces: Deux espaces
 unescape: Déséchapper
-upload_file: Télécharger un fichier
-upload_image: Télécharger une image
+load_file: Télécharger un fichier
+load_image: Télécharger une image
 uppercase: Majuscule
 url_encoder: Encodeur / Décodeur URL
 url_encoder_description: Encoder ou décoder tous les caractères applicables en leurs entités URL correspondantes

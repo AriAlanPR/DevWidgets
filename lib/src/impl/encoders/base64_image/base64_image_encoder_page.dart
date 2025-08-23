@@ -63,7 +63,7 @@ class Base64ImageEncoderPage extends HookConsumerWidget {
                             onPressed: () => uploadImage(ref),
                             icon: const Icon(Icons.image),
                             label: Text(
-                              StringTranslateExtension("upload_image").tr(),
+                              StringTranslateExtension("load_image").tr(),
                             )),
                         Visibility(
                           visible: !kIsWeb,

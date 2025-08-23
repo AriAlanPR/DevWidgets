@@ -35,7 +35,7 @@ class InputToolBar extends StatelessWidget {
       ),
       ElevatedButton.icon(
         icon: const Icon(Icons.upload),
-        label: Text("upload_file".tr()),
+        label: Text("load_file".tr()),
         onPressed: () async {
           var result = await FilePicker.platform.pickFiles();
           if (result != null) {

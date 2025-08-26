@@ -1,8 +1,8 @@
 [Desktop Entry]
 Type=Application
-Name=DevWidgets
+Name=ArcanumDev
 Summary=Utilities for developers.
-Icon=mx.com.digicodev.DevWidgets
-Exec=devwidgets %U
+Icon=mx.com.digicodev.ArcanumDev
+Exec=arcanumdev %U
 Categories=Development
 Keywords=Development

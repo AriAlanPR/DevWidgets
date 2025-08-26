@@ -41,23 +41,23 @@ void downloadImage(BuildContext context, WidgetRef ref) async {
     // User cancelled
     return;
   }
-  final devWidgetsFolder = targetDir;
+  final arcanumDevFolder = targetDir;
   try {
     // Ensure directory exists (should already exist, but be safe)
-    await io.Directory(devWidgetsFolder).create(recursive: true);
+    await io.Directory(arcanumDevFolder).create(recursive: true);
 
     // Attempt capture
     final savedPath = await ref.read(screenshotControllerProvider).captureAndSave(
-          devWidgetsFolder,
+          arcanumDevFolder,
           pixelRatio: 2.0,
-          fileName: "DevWidgetsBase64Encoder_${DateTime.now()}.png",
+          fileName: "ArcanumDevBase64Encoder_${DateTime.now()}.png",
         );
     
     if (!context.mounted) {
       return;
     }
 
-    final fullPath = savedPath ?? devWidgetsFolder;
+    final fullPath = savedPath ?? arcanumDevFolder;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('saved_image_to'.tr(namedArgs: {'path': fullPath})),

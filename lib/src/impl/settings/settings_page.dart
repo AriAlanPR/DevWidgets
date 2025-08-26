@@ -323,7 +323,7 @@ class _About extends ConsumerWidget {
               child: GestureDetector(
                 onTap: () async {
                   await launchUrl(
-                      Uri.parse("https://www.github.com/gumbarros/DevWidgets"));
+                      Uri.parse("https://www.github.com/AriAlanPR/DevWidgets"));
                 },
                 child: ListTile(
                   title: Text(

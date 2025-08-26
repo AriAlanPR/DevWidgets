@@ -1,6 +1,6 @@
-# DevWidgets (Fork)
+# ArcanumDev (Fork)
 
-DevWidgets is a Flutter desktop/web app that bundles common developer tools: generators, converters, formatters, and encoders.
+ArcanumDev is a Flutter desktop/web app that bundles common developer tools: generators, converters, formatters, and encoders.
 This fork focuses on stability, UI fixes, and maintainability for desktop and web builds.
 
 - Website (original): https://gumbarros.github.io/DevWidgets

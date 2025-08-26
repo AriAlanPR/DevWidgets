@@ -40,8 +40,9 @@ class InputEditor extends StatelessWidget {
               children: [
                 if (inputController != null)
                   InputToolBar(
-                      inputController: inputController!,
-                      toolbarTitle: toolbarTitle),
+                    inputController: inputController!,
+                    toolbarTitle: toolbarTitle,
+                  ),
                 Expanded(
                   child: Container(
                     width: width ?? double.infinity,

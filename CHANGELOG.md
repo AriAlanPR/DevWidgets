@@ -57,11 +57,11 @@ All notable changes to this fork will be documented in this file.
 
 ### Linux packaging
 
-- New AppStream metainfo: `mx.com.digicodev.DevWidgets.metainfo.xml`
-- New desktop file: `mx.com.digicodev.DevWidgets.desktop`
+- New AppStream metainfo: `mx.com.digicodev.ArcanumDev.metainfo.xml`
+- New desktop file: `mx.com.digicodev.ArcanumDev.desktop`
 - New Flatpak manifest: `mx.com.digicodev.yml`
-- `linux/CMakeLists.txt`: updated `APPLICATION_ID` to `mx.com.digicodev.DevWidgets`
-- Removed old metainfo: `br.com.barros.DevWidgets.metainfo.xml`
+- `linux/CMakeLists.txt`: updated `APPLICATION_ID` to `mx.com.digicodev.ArcanumDev`
+- Removed old metainfo: `br.com.barros.ArcanumDev.metainfo.xml`
 
 ### Notes
 

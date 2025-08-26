@@ -51,7 +51,7 @@ pubspec.lock
 
 # Flatpak
 build-dir/
-DevWidgets-Linux-Portable.tar.gz
+ArcanumDev-Linux-Portable.tar.gz
 .flatpak-builder/
 
 # iOS build related

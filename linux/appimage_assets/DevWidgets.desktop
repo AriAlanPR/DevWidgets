@@ -1,8 +1,8 @@
 [Desktop Entry]
-Name=DevWidgets
+Name=ArcanumDev
 Version=1.0
 Comment=Utilities for developers.
-Exec=devwidgets %u
+Exec=arcanumdev %u
 Icon=icon
 Terminal=false
 Type=Application

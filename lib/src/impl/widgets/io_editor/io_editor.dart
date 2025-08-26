@@ -6,6 +6,7 @@ import 'package:dev_widgets/src/impl/widgets/io_editor/output_toolbar.dart';
 import 'package:dev_widgets/src/impl/widgets/multi_split_view_divider.dart';
 import 'package:dev_widgets/src/impl/widgets/accordion.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:multi_split_view/multi_split_view.dart';
 
 class IOEditor extends StatelessWidget {
@@ -65,7 +66,7 @@ class IOEditor extends StatelessWidget {
           if (inputController != null)
             InputToolBar(
               inputController: inputController!,
-              toolbarTitle: 'input',
+              toolbarTitle: 'input'.tr(),
             ),
           Container(
             margin: const EdgeInsets.all(8.0),
@@ -86,7 +87,7 @@ class IOEditor extends StatelessWidget {
           if (outputController != null)
             OutputToolbar(
               outputController: outputController!,
-              toolbarTitle: 'output',
+              toolbarTitle: 'output'.tr(),
               actionButtons: null,
             ),
           Container(
@@ -109,13 +110,13 @@ class IOEditor extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Accordion(
-              title: 'Input',
+              title: 'input'.tr(),
               initiallyExpanded: inputInitiallyExpanded,
               child: inputContent,
             ),
             const SizedBox(height: 8),
             Accordion(
-              title: 'Output',
+              title: 'output'.tr(),
               initiallyExpanded: outputInitiallyExpanded,
               child: outputContent,
             ),

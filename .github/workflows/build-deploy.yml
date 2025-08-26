@@ -33,13 +33,13 @@ jobs:
           flutter build linux
 
       - name: Compress Flutter build
-        run: tar -C build/linux/x64/release/bundle -cvf DevWidgets-Linux-Portable.tar.gz .
+        run: tar -C build/linux/x64/release/bundle -cvf ArcanumDev-Linux-Portable.tar.gz .
 
       - name: Upload app archive for next steps
         uses: actions/upload-artifact@v2
         with:
-          name: DevWidgets-Archive
-          path: DevWidgets-Linux-Portable.tar.gz
+          name: ArcanumDev-Archive
+          path: ArcanumDev-Linux-Portable.tar.gz
 
   build-appimage:
     name: Build AppImage
@@ -52,27 +52,27 @@ jobs:
       - name: Download app archive
         uses: actions/download-artifact@v3
         with:
-          name: DevWidgets-Archive
+          name: ArcanumDev-Archive
 
       - name: Extract archive
         run: |
-          mkdir portable && tar -xf DevWidgets-Linux-Portable.tar.gz -C $_
+          mkdir portable && tar -xf ArcanumDev-Linux-Portable.tar.gz -C $_
 
       - name: Build AppImage
         run: |
-          cp -r portable DevWidgets.AppDir
+          cp -r portable ArcanumDev.AppDir
           wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
           sudo apt install libfuse2
           chmod +x ./appimagetool-x86_64.AppImage
-          cp -r linux/appimage_assets/* DevWidgets.AppDir/
-          chmod +x DevWidgets.AppDir/AppRun
-          ./appimagetool-x86_64.AppImage DevWidgets.AppDir/
+          cp -r linux/appimage_assets/* ArcanumDev.AppDir/
+          chmod +x ArcanumDev.AppDir/AppRun
+          ./appimagetool-x86_64.AppImage ArcanumDev.AppDir/
 
       - name: Upload .AppImage artifact to workflow
         uses: actions/upload-artifact@v2
         with:
           name: AppImage artifact
-          path: DevWidgets-x86_64.AppImage
+          path: ArcanumDev-x86_64.AppImage
 
   automatic_release:
     name: Automatic Release
@@ -85,7 +85,7 @@ jobs:
       - name: Download Linux portable artifact
         uses: actions/download-artifact@v3
         with:
-          name: DevWidgets-Archive
+          name: ArcanumDev-Archive
     
       - name: Download AppImage artifact
         uses: actions/download-artifact@v3
@@ -105,6 +105,6 @@ jobs:
           prerelease: false
           title: "Latest Build"
           files: |
-              DevWidgets-x86_64.AppImage
-              DevWidgets-Linux-Portable.tar.gz
-              DevWidgets.flatpak
+              ArcanumDev-x86_64.AppImage
+              ArcanumDev-Linux-Portable.tar.gz
+              ArcanumDev.flatpak

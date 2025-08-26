@@ -65,7 +65,6 @@ class IOEditor extends StatelessWidget {
           if (inputController != null)
             InputToolBar(
               inputController: inputController!,
-              toolbarTitle: 'input',
             ),
           Container(
             margin: const EdgeInsets.all(8.0),

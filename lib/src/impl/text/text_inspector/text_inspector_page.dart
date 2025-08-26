@@ -8,7 +8,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:multi_split_view/multi_split_view.dart';
 
 class TextInspectorPage extends HookConsumerWidget {
   const TextInspectorPage({super.key});
@@ -70,37 +69,53 @@ class TextInspectorPage extends HookConsumerWidget {
     }, [ref.watch(inputTextProvider)]);
 
     return SizedBox(
-        height: MediaQuery.of(context).size.height - kToolbarHeight,
-        child: ListView(children: [
+      height: MediaQuery.of(context).size.height - kToolbarHeight,
+      child: ListView(
+        children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text("convert".tr(),
-                    style: Theme.of(context).textTheme.titleMedium),
+                Text(
+                  "convert".tr(),
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
                 const _ConvertionButtons(),
               ],
             ),
           ),
-          SizedBox(
-              height: MediaQuery.of(context).size.height / 1.8,
-              child: IOEditor(
-                  resizable: false,
-                  inputOnChanged: ((value) {
-                    ref.read(originalTextProvider.notifier).state = "";
-                    ref.read(selectedCaseConvertionProvider.notifier).state =
-                        CaseConvertion.originalText;
-                  }),
-                  initialAreas: [Area(size: 0.7), Area(size: 0.3)],
-                  usesCodeControllers: false,
-                  outputChild: _TextData(
-                      wordDistributionController: wordDistributionController,
-                      characterDistributionController:
-                          characterDistributionController),
-                  inputController: controller)),
-        ]));
+          IOEditor(
+            useExpansionPanels: true,
+            singleScroll: true,
+            inputInitiallyExpanded: true,
+            outputInitiallyExpanded: true,
+            inputOnChanged: (value) {
+              ref.read(originalTextProvider.notifier).state = "";
+              ref.read(selectedCaseConvertionProvider.notifier).state =
+                  CaseConvertion.originalText;
+            },
+            usesCodeControllers: false,
+            outputChild: Column(
+              children: [
+                _TextData(
+                  wordDistributionController: wordDistributionController,
+                  characterDistributionController:
+                      characterDistributionController,
+                ),
+                _DistributionData(
+                  wordDistributionController: wordDistributionController,
+                  characterDistributionController:
+                      characterDistributionController,
+                ),
+              ],
+            ),
+            inputController: controller,
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -156,62 +171,54 @@ class _TextData extends ConsumerWidget {
       child: Card(
         surfaceTintColor: Colors.transparent,
         child: Container(
-          width: MediaQuery.of(context).size.width / 1.5,
           margin: const EdgeInsets.all(8.0),
-          height: MediaQuery.of(context).size.height / 1.5,
-          child: ListView(
-            children: [
-              Text("selection".tr(),
-                  style: Theme.of(context).textTheme.titleMedium),
-              _TextDataEntry(
-                  label: "position".tr(),
-                  value: ref.watch(selectionOffsetProvider).toString()),
-              const SizedBox(
-                height: 10,
-              ),
-              Text("statistics".tr(),
-                  style: Theme.of(context).textTheme.titleMedium),
-              _TextDataEntry(
-                  label: "characters".tr(),
-                  value: ref.watch(charactersCountProvider).toString()),
-              _TextDataEntry(
-                  label: "words".tr(),
-                  value: ref.watch(wordCountProvider).toString()),
-              _TextDataEntry(
-                  label: "lines".tr(),
-                  value: ref.watch(lineCountProvider).toString()),
-              _TextDataEntry(
-                  label: "sentences".tr(),
-                  value: ref.watch(sentenceCountProvider).toString()),
-              _TextDataEntry(
-                  label: "paragraphs".tr(),
-                  value: ref.watch(paragraphCountProvider).toString()),
-              _TextDataEntry(
-                  label: "bytes".tr(),
-                  value: ref.watch(bytesCountProvider).toString()),
-              const SizedBox(
-                height: 10,
-              ),
-              Text("word_distribution".tr(),
-                  style: Theme.of(context).textTheme.titleMedium),
-              TextFormField(
-                controller: wordDistributionController,
-                maxLines: 10,
-                readOnly: true,
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text("character_distribution".tr(),
-                  style: Theme.of(context).textTheme.titleMedium),
-              TextFormField(
-                controller: characterDistributionController,
-                maxLines: 10,
-                readOnly: true,
-                style: Theme.of(context).textTheme.bodyMedium,
-              )
-            ],
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "selection".tr(),
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ),
+                _TextDataEntry(
+                    label: "position".tr(),
+                    value: ref.watch(selectionOffsetProvider).toString()),
+                const SizedBox(
+                  height: 10,
+                ),
+                const Divider(height: 1),
+                const SizedBox(height: 10),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "statistics".tr(),
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ),
+                _TextDataEntry(
+                    label: "characters".tr(),
+                    value: ref.watch(charactersCountProvider).toString()),
+                _TextDataEntry(
+                    label: "words".tr(),
+                    value: ref.watch(wordCountProvider).toString()),
+                _TextDataEntry(
+                    label: "lines".tr(),
+                    value: ref.watch(lineCountProvider).toString()),
+                _TextDataEntry(
+                    label: "sentences".tr(),
+                    value: ref.watch(sentenceCountProvider).toString()),
+                _TextDataEntry(
+                    label: "paragraphs".tr(),
+                    value: ref.watch(paragraphCountProvider).toString()),
+                _TextDataEntry(
+                    label: "bytes".tr(),
+                    value: ref.watch(bytesCountProvider).toString()),
+              ],
+            ),
           ),
         ),
       ),
@@ -227,11 +234,72 @@ class _TextDataEntry extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
+    final labelStyle = Theme.of(context).textTheme.bodyMedium;
+    final valueStyle = Theme.of(context).textTheme.bodyMedium;
+
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: SizedBox(
+        width: 200,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 2.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                label,
+                style: labelStyle,
+              ),
+              Text(
+                value,
+                textAlign: TextAlign.right,
+                style: valueStyle,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _DistributionData extends ConsumerWidget {
+  final TextEditingController wordDistributionController;
+  final TextEditingController characterDistributionController;
+
+  const _DistributionData({
+    required this.wordDistributionController,
+    required this.characterDistributionController,
+  });
+
+  @override
+  Widget build(BuildContext context, ref) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(label, style: Theme.of(context).textTheme.bodyMedium),
-        Text(value, style: Theme.of(context).textTheme.bodyMedium),
+        Expanded(
+          child: TextFormField(
+            clipBehavior: Clip.none,
+            decoration: InputDecoration(
+              labelText: "word_distribution".tr(),
+            ),
+            controller: wordDistributionController,
+            maxLines: 10,
+            readOnly: true,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+        ),
+        Expanded(
+          child: TextFormField(
+            clipBehavior: Clip.none,
+            decoration: InputDecoration(
+              labelText: "character_distribution".tr(),
+            ),
+            controller: characterDistributionController,
+            maxLines: 10,
+            readOnly: true,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+        )
       ],
     );
   }

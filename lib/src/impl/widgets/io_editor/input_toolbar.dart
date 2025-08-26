@@ -19,7 +19,7 @@ class InputToolBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IOToolbar(title: toolbarTitle ?? "input".tr(), actions: [
+    return IOToolbar(title: toolbarTitle ?? "", actions: [
       ElevatedButton.icon(
         icon: const Icon(Icons.copy),
         label: Text("copy".tr()),

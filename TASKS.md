@@ -5,9 +5,9 @@ Status legend: [ ] pending · [~] in progress · [x] done
 - [x] Fix HTML preview visuals
 - [ ] Fix Case converter visuals
 - [x] Fix Markdown preview visuals
-- [ ] Fix base64 image decoder when typing manually
-- [ ] Fix text diff hidden controls
-- [ ] Fix text diff on capture
+- [x] Fix base64 image decoder when typing manually
+- [x] Fix text diff hidden controls
+- [x] Fix text diff on capture
 - [~] Fix escape/unescape errors on manual typing
 - [x] Fix IO editor text not aligned with the number representing its row when numbering rows for code
 - [x] Fix IO editor text overflow when the lines are more than the available space its container has

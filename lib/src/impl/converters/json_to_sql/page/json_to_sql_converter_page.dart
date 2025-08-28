@@ -46,28 +46,24 @@ class TabbedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 3,
-        child: Column(
-          children: [
-            // App-level tabs (icon + label)
-            TabBar(
-              // NOTE: updates selectedTabProvider to keep your state in sync
-              onTap: onTap,
-              tabs: tabs,
+      length: tabs.length,
+      child: Column(
+        children: [
+          // App-level tabs (icon + label)
+          TabBar(
+            // NOTE: updates selectedTabProvider to keep your state in sync
+            onTap: onTap,
+            tabs: tabs,
+          ),
+          Expanded(
+            child: TabBarView(
+              // Use provided views dynamically
+              children: views,
             ),
-            Expanded(
-              child: const TabBarView(
-                // Keep the same widgets as before
-                children: [
-                  JsonToSqlConverterInput(),
-                  JsonToSqlConverterOptions(),
-                  JsonToSqlConverterOutput(),
-                ],
-              ),
-            ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -83,6 +79,7 @@ class TabbedTab extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    return Tab(icon: Icon(icon), text: text.tr());
+    // Expect caller to provide an already localized string when needed.
+    return Tab(icon: Icon(icon), text: text);
   }  
 }

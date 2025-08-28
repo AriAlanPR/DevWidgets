@@ -3,7 +3,7 @@
 Status legend: [ ] pending · [~] in progress · [x] done
 
 - [x] Fix HTML preview visuals
-- [ ] Fix Case converter visuals
+- [x] Fix Case converter visuals
 - [x] Fix Markdown preview visuals
 - [x] Fix base64 image decoder when typing manually
 - [x] Fix text diff hidden controls

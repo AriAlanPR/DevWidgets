@@ -38,6 +38,17 @@ class Main extends StatelessWidget {
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       title: "DevWidgets",
+      theme: ThemeData(
+        useMaterial3: true,
+        colorSchemeSeed: Colors.teal,
+        brightness: Brightness.light,
+      ),
+      darkTheme: ThemeData(
+        useMaterial3: true,
+        colorSchemeSeed: Colors.teal,
+        brightness: Brightness.dark,
+      ),
+      themeMode: ThemeMode.system,
     );
   }
 }

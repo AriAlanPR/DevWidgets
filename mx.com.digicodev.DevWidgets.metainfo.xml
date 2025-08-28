@@ -8,13 +8,13 @@
   <id>mx.com.digicodev.DevWidgets</id>
   <name>DevWidgets</name>
   <summary>Utilities for developers.</summary>
-  <developer_name>Gustavo Mauricio de Barros</developer_name>
-  <url type="homepage">https://github.com/gumbarros/DevWidgets</url>
+  <developer_name>Alan Perez</developer_name>
+  <url type="homepage">https://github.com/AriAlanPR/DevWidgets</url>
   <metadata_license>MIT</metadata_license>
   <project_license>MIT</project_license>
   <supports>
     <control>pointing</control>
-    <control>keyboard</control>
+    <control>keyboard</control> 
     <control>touch</control>
   </supports>
   <description>

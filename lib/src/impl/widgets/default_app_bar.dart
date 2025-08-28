@@ -49,7 +49,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
             child: IconButton(
                 onPressed: () {
                   launchUrlString(
-                      "https://github.com/gumbarros/DevWidgets/releases/tag/latest");
+                      "https://github.com/AriAlanPR/DevWidgets/releases/tag/latest");
                 },
                 tooltip: "download_desktop_version".tr(),
                 icon: const Icon(

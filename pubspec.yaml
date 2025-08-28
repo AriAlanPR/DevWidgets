@@ -79,6 +79,9 @@ flutter_icons:
   image_path: "assets/icon/icon.png"
   web:
     generate: true
+  macos:
+    generate: true
+    image_path_macos: "assets/icon/icon.png"
   windows:
     generate: true
   linux:

@@ -37,6 +37,9 @@ class Base64TextEncoderPage extends HookConsumerWidget {
     return SizedBox(
       height: MediaQuery.of(context).size.height - kToolbarHeight,
       child: ListView(
+        physics: const ClampingScrollPhysics(),
+        primary: false,
+        shrinkWrap: true,
         children: [
           Container(
             margin: const EdgeInsets.all(8.0),
@@ -44,70 +47,47 @@ class Base64TextEncoderPage extends HookConsumerWidget {
               headline: Text(StringTranslateExtension("configuration").tr()),
               child: Column(
                 children: [
-                  YaruTile(
-                    enabled: true,
+                  ListTile(
                     leading: const Icon(Icons.compare_arrows_sharp),
-                    trailing: Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Row(
-                        children: [
-                          ListTile(
-                              title: Text(
-                                  StringTranslateExtension("conversion").tr()),
-                              subtitle: Text(
-                                  StringTranslateExtension("conversion_mode")
-                                      .tr())),
-                          DropdownButton<ConversionMode>(
-                            value: ref.watch(conversionModeProvider),
-                            items: getDropdownMenuItems<ConversionMode>(
-                                ConversionMode.values),
-                            onChanged: (selected) {
-                              ref.read(conversionModeProvider.notifier).state =
-                                  selected!;
-                            },
-                          ),
-                        ],
-                      ),
+                    title: Text(StringTranslateExtension("conversion").tr()),
+                    subtitle: Text(StringTranslateExtension("conversion_mode").tr()),
+                    trailing: DropdownButton<ConversionMode>(
+                      value: ref.watch(conversionModeProvider),
+                      items: getDropdownMenuItems<ConversionMode>(
+                          ConversionMode.values),
+                      onChanged: (selected) {
+                        ref.read(conversionModeProvider.notifier).state =
+                            selected!;
+                      },
                     ),
                   ),
-                  YaruTile(
-                    enabled: true,
+                  ListTile(
                     leading: const Icon(Icons.grid_3x3),
-                    trailing: Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Row(
-                        children: [
-                          ListTile(
-                              title: Text(
-                                  StringTranslateExtension("encoding").tr()),
-                              subtitle: Text(StringTranslateExtension(
-                                      "encoding_description")
-                                  .tr())),
-                          DropdownButton<Base64EncodingType>(
-                            value: ref.watch(encodingTypeProvider),
-                            items: getDropdownMenuItems<Base64EncodingType>(
-                                Base64EncodingType.values),
-                            onChanged: (selected) {
-                              ref.read(encodingTypeProvider.notifier).state =
-                                  selected!;
-                            },
-                          ),
-                        ],
-                      ),
+                    title: Text(StringTranslateExtension("encoding").tr()),
+                    subtitle: Text(StringTranslateExtension("encoding_description").tr()),
+                    trailing: DropdownButton<Base64EncodingType>(
+                      value: ref.watch(encodingTypeProvider),
+                      items: getDropdownMenuItems<Base64EncodingType>(
+                          Base64EncodingType.values),
+                      onChanged: (selected) {
+                        ref.read(encodingTypeProvider.notifier).state =
+                            selected!;
+                      },
                     ),
                   ),
                 ],
               ),
             ),
           ),
-          SizedBox(
-              height: MediaQuery.of(context).size.height / 1.2,
-              child: IOEditor(
-                inputController: inputController,
-                usesCodeControllers: false,
-                outputController: outputController,
-                isVerticalLayout: true,
-              )),
+          IOEditor(
+            inputController: inputController,
+            usesCodeControllers: false,
+            outputController: outputController,
+            singleScroll: true,
+            useExpansionPanels: true,
+            inputInitiallyExpanded: true,
+            outputInitiallyExpanded: true,
+          ),
         ],
       ),
     );

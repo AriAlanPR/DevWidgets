@@ -52,9 +52,9 @@ class TextDiffPage extends HookConsumerWidget {
           Container(
             margin: const EdgeInsets.all(8.0),
             child: YaruSection(
-                headline: Text(StringTranslateExtension("configuration").tr()),
-                child: Column(
-                  children: [
+              headline: Text(StringTranslateExtension("configuration").tr()),
+              child: Column(
+                children: [
                   RadioListTile<DiffCleanupType>(
                       title: Text("semantic_cleanup".tr()),
                       subtitle: Text("semantic_cleanup_description".tr()),
@@ -104,7 +104,9 @@ class TextDiffPage extends HookConsumerWidget {
                         ref.read(diffCleanupTypeProvider.notifier).state =
                             value ?? DiffCleanupType.EFFICIENCY;
                       }),
-                ],),),
+                ],
+              ),
+            ),
           ),
           SizedBox(
               height: MediaQuery.of(context).size.height / 2.5,
@@ -117,23 +119,27 @@ class TextDiffPage extends HookConsumerWidget {
                           dragging: dragging, highlighted: highlighted),
                   axis: Axis.horizontal,
                   initialAreas: [
-                    Area(weight: 0.5, minimalWeight: 0.3),
-                    Area(weight: 0.5, minimalWeight: 0.3)
+                    Area(size: 0.5, min: 0.3),
+                    Area(size: 0.5, min: 0.3)
                   ],
-                  children: [
-                    InputEditor(
-                        toolbarTitle: "old_text".tr(),
-                        inputController: oldTextController,
-                        minLines: 20,
-                        height: MediaQuery.of(context).size.height / 2.5,
-                        usesCodeControllers: false),
-                    InputEditor(
-                        toolbarTitle: "new_text".tr(),
-                        minLines: 20,
-                        inputController: newTextController,
-                        height: MediaQuery.of(context).size.height / 2.5,
-                        usesCodeControllers: false),
-                  ],
+                  builder: (context, area) {
+                    final index = area.index;
+                    if (index == 0) {
+                      return InputEditor(
+                          toolbarTitle: "old_text".tr(),
+                          inputController: oldTextController,
+                          minLines: 20,
+                          height: MediaQuery.of(context).size.height / 2.5,
+                          usesCodeControllers: false);
+                    } else {
+                      return InputEditor(
+                          toolbarTitle: "new_text".tr(),
+                          minLines: 20,
+                          inputController: newTextController,
+                          height: MediaQuery.of(context).size.height / 2.5,
+                          usesCodeControllers: false);
+                    }
+                  },
                 ),
               )),
           GestureDetector(
@@ -143,10 +149,16 @@ class TextDiffPage extends HookConsumerWidget {
                 context: context,
                 builder: (context) {
                   return AlertDialog(
-                    title: YaruTile(
-                        enabled: true,
-                        trailing: const Icon(Icons.close),
-                        title: Text("difference".tr())),
+                    title: ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      title: Text(
+                        "difference".tr(),
+                      ),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
+                    ),
                     content: _Diff(settings: settings, isDialog: true),
                   );
                 },

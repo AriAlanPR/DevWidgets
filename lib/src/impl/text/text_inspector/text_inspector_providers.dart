@@ -30,7 +30,7 @@ final wordDistributionProvider = StateProvider<DistributionMap>((ref) => {});
 
 final characterDistributionProvider = StateProvider<DistributionMap>((ref) => {});
 
-convertCase(WidgetRef ref, CaseConvertion caseConvertion) {
+void convertCase(WidgetRef ref, CaseConvertion caseConvertion) {
   String input = ref.read(inputTextProvider);
 
   if (caseConvertion != CaseConvertion.originalText) {

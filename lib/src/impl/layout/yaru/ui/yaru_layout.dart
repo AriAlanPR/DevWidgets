@@ -29,7 +29,7 @@ class YaruLayout extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   responsive.ResponsiveVisibility(
-                    hiddenWhen: const [
+                    hiddenConditions: const [
                       responsive.Condition.smallerThan(name: 'TABLET_LARGE')
                     ],
                     visible: !ref.watch(isDrawerOpenProvider),
@@ -39,7 +39,7 @@ class YaruLayout extends ConsumerWidget {
                           border: Border(
                             right: BorderSide(
                               width: 1,
-                              color: Colors.black.withOpacity(0.1),
+                              color: Colors.black.withValues(alpha: 0.1),
                             ),
                           ),
                         ),

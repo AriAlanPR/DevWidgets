@@ -3,7 +3,7 @@ import 'package:dev_widgets/src/impl/layout/yaru/providers/selected_group_provid
 import 'package:dev_widgets/src/impl/tools.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:responsive_framework/responsive_grid.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});

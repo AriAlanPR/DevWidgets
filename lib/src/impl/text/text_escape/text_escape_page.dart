@@ -40,6 +40,9 @@ class TextEscapePage extends HookConsumerWidget {
     return SizedBox(
       height: MediaQuery.of(context).size.height - kToolbarHeight,
       child: ListView(
+        physics: const ClampingScrollPhysics(),
+        primary: false,
+        shrinkWrap: true,
         children: [
           Container(
             margin: const EdgeInsets.all(8.0),
@@ -47,42 +50,33 @@ class TextEscapePage extends HookConsumerWidget {
               headline: Text(StringTranslateExtension("configuration").tr()),
               child: Column(
                 children: [
-                  YaruTile(
-                    enabled: true,
+                  ListTile(
                     leading: const Icon(Icons.compare_arrows_sharp),
-                    trailing: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: ListTile(
-                              title: Text(
-                                  StringTranslateExtension("conversion").tr()),
-                              subtitle: Text("conversion_mode".tr())),
-                        ),
-                        DropdownButton<EscapeConversionMode>(
-                          value: ref.watch(escapeConversionModeProvider),
-                          items: getDropdownMenuItems<EscapeConversionMode>(
-                              EscapeConversionMode.values),
-                          onChanged: (selected) {
-                            ref.read(escapeConversionModeProvider.notifier)
-                              .state = selected ?? EscapeConversionMode.escape;
-                          },
-                        ),
-                      ],
+                    title: Text(StringTranslateExtension("conversion").tr()),
+                    subtitle: Text("conversion_mode".tr()),
+                    trailing: DropdownButton<EscapeConversionMode>(
+                      value: ref.watch(escapeConversionModeProvider),
+                      items: getDropdownMenuItems<EscapeConversionMode>(
+                          EscapeConversionMode.values),
+                      onChanged: (selected) {
+                        ref.read(escapeConversionModeProvider.notifier).state =
+                            selected ?? EscapeConversionMode.escape;
+                      },
                     ),
                   )
                 ],
               ),
             ),
           ),
-          SizedBox(
-              height: MediaQuery.of(context).size.height / 1.2,
-              child: IOEditor(
-                usesCodeControllers: false,
-                inputController: inputController,
-                outputController: outputController,
-                isVerticalLayout: true,
-              )),
+          IOEditor(
+            usesCodeControllers: false,
+            inputController: inputController,
+            outputController: outputController,
+            singleScroll: true,
+            useExpansionPanels: true,
+            inputInitiallyExpanded: true,
+            outputInitiallyExpanded: true,
+          ),
         ],
       ),
     );

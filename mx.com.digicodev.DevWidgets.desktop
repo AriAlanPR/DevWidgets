@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=DevWidgets
+Summary=Utilities for developers.
+Icon=mx.com.digicodev.DevWidgets
+Exec=devwidgets %U
+Categories=Development
+Keywords=Development

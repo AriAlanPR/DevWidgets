@@ -31,87 +31,49 @@ class LipsumGeneratorPage extends HookConsumerWidget {
               headline: Text(StringTranslateExtension("configuration").tr()),
               child: Column(
                 children: [
-                  YaruTile(
-                    enabled: true,
+                  ListTile(
                     leading: const Icon(Icons.width_normal),
-                    trailing: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: ListTile(
-                              title: Text(StringTranslateExtension(
-                                      "lipsum_generator_mode")
-                                  .tr()),
-                              subtitle: Text(StringTranslateExtension(
-                                      "lipsum_generator_mode_description")
-                                  .tr())),
-                        ),
-                        DropdownButton<LipsumType>(
-                            value: ref.watch(lipsumTypeProvider),
-                            items: getDropdownMenuItems<LipsumType>(
-                                LipsumType.values),
-                            onChanged: (selected) => ref
-                                .read(lipsumTypeProvider.notifier)
-                                .state = selected!),
-                      ],
-                    ),
+                    title: Text(StringTranslateExtension("lipsum_generator_mode").tr()),
+                    subtitle: Text(StringTranslateExtension("lipsum_generator_mode_description").tr()),
+                    trailing: DropdownButton<LipsumType>(
+                        value: ref.watch(lipsumTypeProvider),
+                        items: getDropdownMenuItems<LipsumType>(LipsumType.values),
+                        onChanged: (selected) => ref
+                            .read(lipsumTypeProvider.notifier)
+                            .state = selected!),
                   ),
-                  YaruTile(
-                    enabled: true,
+                  ListTile(
                     leading: const Icon(Icons.fork_right),
-                    trailing: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: ListTile(
-                            title: Text(
-                                StringTranslateExtension("lipsum_start_with")
-                                    .tr()),
-                          ),
-                        ),
-                        Switch(
-                          onChanged: (value) => ref
-                              .read(startWithLoremProvider.notifier)
-                              .state = value,
-                          value: ref.watch(startWithLoremProvider),
-                        ),
-                      ],
+                    title: Text(StringTranslateExtension("lipsum_start_with").tr()),
+                    trailing: Switch(
+                      onChanged: (value) => ref
+                          .read(startWithLoremProvider.notifier)
+                          .state = value,
+                      value: ref.watch(startWithLoremProvider),
                     ),
                   ),
-                  YaruTile(
-                    enabled: true,
+                  ListTile(
                     leading: const Icon(Icons.tag),
-                    trailing: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: ListTile(
-                            title:
-                                Text(StringTranslateExtension("amount").tr()),
-                            subtitle: Text(StringTranslateExtension(
-                                    "lipsum_amount_description")
-                                .tr()),
-                          ),
+                    title: Text(StringTranslateExtension("amount").tr()),
+                    subtitle: Text(StringTranslateExtension("lipsum_amount_description").tr()),
+                    trailing: SizedBox(
+                      width: 100,
+                      child: TextFormField(
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
+                        textAlign: TextAlign.end,
+                        initialValue: ref.watch(amountProvider).toString(),
+                        onChanged: (value) {
+                          ref.read(amountProvider.notifier).state =
+                              int.tryParse(value) ?? 0;
+                        },
+                        decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.all(10),
+                          border: OutlineInputBorder(),
                         ),
-                        Flexible(
-                          child: TextFormField(
-                            keyboardType: TextInputType.number,
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                            textAlign: TextAlign.end,
-                            initialValue: ref.watch(amountProvider).toString(),
-                            onChanged: (value) {
-                              ref.read(amountProvider.notifier).state =
-                                  int.tryParse(value) ?? 0;
-                            },
-                            decoration: const InputDecoration(
-                              contentPadding: EdgeInsets.all(10),
-                              border: OutlineInputBorder(),
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ],

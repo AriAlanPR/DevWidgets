@@ -27,7 +27,7 @@ List<TableField> getTableFields(List<Map<String, dynamic>> values) {
   return fields;
 }
 
-bool _isMap(value) {
+bool _isMap(dynamic value) {
   try {
     value.keys;
     return true;

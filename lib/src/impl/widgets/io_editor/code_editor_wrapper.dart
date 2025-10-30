@@ -10,13 +10,15 @@ class CodeEditorWrapper extends ConsumerWidget {
   final bool readOnly;
   final Function(String value)? onChanged;
   final int? minLines;
+  final bool expands;
   const CodeEditorWrapper(
       {super.key,
       required this.usesCodeControllers,
       this.textEditingController,
       this.onChanged,
-        this.minLines = 10,
-      this.readOnly = false});
+      this.minLines = 10,
+      this.readOnly = false,
+      this.expands = true});
 
   @override
   Widget build(BuildContext context, ref) {
@@ -36,7 +38,7 @@ class CodeEditorWrapper extends ConsumerWidget {
               inherit: false,
               textBaseline: TextBaseline.alphabetic),
           readOnly: readOnly,
-          expands: true,
+          expands: expands,
           onChanged: onChanged,
           controller:
               (textEditingController ?? CodeController()) as CodeController,

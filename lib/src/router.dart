@@ -10,8 +10,8 @@ import 'package:go_router/go_router.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'impl/layout/yaru/ui/yaru_layout.dart';
 
-layout({required Widget child}) => ResponsiveWrapper.builder(
-      YaruLayout(
+Widget layout({required Widget child}) => ResponsiveBreakpoints.builder(
+      child: YaruLayout(
         child: Consumer(
           builder: (context, ref, _) {
             final selectedTool = ref.watch(selectedToolProvider);
@@ -32,15 +32,15 @@ layout({required Widget child}) => ResponsiveWrapper.builder(
           },
         ),
       ),
-      breakpoints: [
-        const ResponsiveBreakpoint.autoScale(360),
-        const ResponsiveBreakpoint.autoScale(480, name: MOBILE),
-        const ResponsiveBreakpoint.resize(640, name: 'MOBILE_LARGE'),
-        const ResponsiveBreakpoint.resize(850, name: TABLET),
-        const ResponsiveBreakpoint.resize(920, name: 'TABLET_LARGE'),
-        const ResponsiveBreakpoint.resize(1080, name: DESKTOP),
-        const ResponsiveBreakpoint.resize(1440, name: 'DESKTOP_LARGE'),
-        const ResponsiveBreakpoint.resize(2460, name: '4K'),
+      breakpoints: const [
+        Breakpoint(start: 0, end: 479, name: MOBILE),
+        Breakpoint(start: 480, end: 639, name: 'MOBILE_LARGE'),
+        Breakpoint(start: 640, end: 849, name: TABLET),
+        Breakpoint(start: 850, end: 919, name: 'TABLET_LARGE'),
+        Breakpoint(start: 920, end: 1079, name: DESKTOP),
+        Breakpoint(start: 1080, end: 1439, name: 'DESKTOP_LARGE'),
+        Breakpoint(start: 1440, end: 2459, name: 'WIDESCREEN'),
+        Breakpoint(start: 2460, end: double.infinity, name: '4K'),
       ],
     );
 

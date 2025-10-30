@@ -31,13 +31,15 @@ class InputEditor extends StatelessWidget {
       visible: inputChild == null,
       replacement: inputChild ?? const SizedBox.shrink(),
       child: ListView(
+        physics: const ClampingScrollPhysics(),
+        primary: false,
         children: [
           inputController != null
               ? InputToolBar(
                   inputController: inputController!, toolbarTitle: toolbarTitle)
               : const SizedBox.shrink(),
           Container(
-            width: width ?? MediaQuery.of(context).size.width,
+            width: width ?? double.infinity,
             margin: const EdgeInsets.all(8.0),
             height: height ??
                 (isVerticalLayout

@@ -42,51 +42,48 @@ class YamlFormatterPage extends HookConsumerWidget {
     return SizedBox(
       height: MediaQuery.of(context).size.height - kToolbarHeight,
       child: ListView(
+        physics: const ClampingScrollPhysics(),
+        primary: false,
+        shrinkWrap: true,
         children: [
           Container(
             margin: const EdgeInsets.all(8.0),
-            child: YaruSection(headline: "configuration".tr(), children: [
-              YaruTile(
-                enabled: true,
-                leading: const Icon(Icons.arrow_right_alt),
-                trailing: Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: Text(
-                    "yaml_style".tr(),
-                    style: const TextStyle(fontSize: 18),
+            child: YaruSection(
+              headline: Text("configuration".tr()),
+              child: Column(
+                children: [
+                  ListTile(
+                    leading: const Icon(Icons.arrow_right_alt),
+                    title: Text("yaml_style".tr()),
+                    trailing: DropdownButton<YamlStyle>(
+                        value: ref.watch(yamlStyleProvider),
+                        items: getYamlStyleDropdownMenuItems(),
+                        onChanged: (selected) => ref
+                            .read(yamlStyleProvider.notifier)
+                            .state = selected!),
                   ),
-                ),
-                 DropdownButton<YamlStyle>(
-                    value: ref.watch(yamlStyleProvider),
-                    items: getYamlStyleDropdownMenuItems(),
-                    onChanged: (selected) =>
-                        ref.read(yamlStyleProvider.notifier).state = selected!),
+                  ListTile(
+                    leading: const Icon(Icons.sort_by_alpha),
+                    title: Text("sort_yaml_properties_alphabetically".tr()),
+                    trailing: Switch(
+                      value: ref.watch(sortAlphabeticallyProvider),
+                      onChanged: (value) => ref
+                          .read(sortAlphabeticallyProvider.notifier)
+                          .state = value,
+                    ),
+                  )
+                ],
               ),
-              YaruTile(
-                enabled: true,
-                leading: const Icon(Icons.sort_by_alpha),
-                trailing: Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: Text(
-                    "sort_yaml_properties_alphabetically".tr(),
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                ),
-                 Switch(
-                  value: ref.watch(sortAlphabeticallyProvider),
-                  onChanged: (value) => ref
-                      .read(sortAlphabeticallyProvider.notifier)
-                      .state = value,
-                ),
-              )
-            ]),
+            ),
           ),
-          SizedBox(
-              height: MediaQuery.of(context).size.height / 1.2,
-              child: IOEditor(
-                inputController: inputController,
-                outputController: outputController,
-              )),
+          IOEditor(
+            inputController: inputController,
+            outputController: outputController,
+            singleScroll: true,
+            useExpansionPanels: true,
+            inputInitiallyExpanded: true,
+            outputInitiallyExpanded: true,
+          ),
         ],
       ),
     );

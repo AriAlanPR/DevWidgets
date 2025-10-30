@@ -42,23 +42,21 @@ class JsonFormatterPage extends HookConsumerWidget {
     return SizedBox(
       height: MediaQuery.of(context).size.height - kToolbarHeight,
       child: ListView(
+        physics: const ClampingScrollPhysics(),
+        primary: false,
+        shrinkWrap: true,
         children: [
           Container(
             margin: const EdgeInsets.all(8.0),
             child: YaruSection(
-                headline: StringTranslateExtension("configuration").tr(),
+              headline: Text(StringTranslateExtension("configuration").tr()),
+              child: Column(
                 children: [
-                  YaruTile(
-                    enabled: true,
+                  ListTile(
                     leading: const Icon(Icons.arrow_right_alt),
-                    trailing: Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Text(
-                        "indentation".tr(),
-                        style: const TextStyle(fontSize: 18),
-                      ),
-                    ),
-                     DropdownButton<Indentation>(
+                    title: Text("indentation".tr()),
+                    subtitle: const Text(""),
+                    trailing: DropdownButton<Indentation>(
                         value: ref.watch(indentationProvider),
                         items: getDropdownMenuItems<Indentation>(
                             Indentation.values),
@@ -66,31 +64,28 @@ class JsonFormatterPage extends HookConsumerWidget {
                             .read(indentationProvider.notifier)
                             .state = selected!),
                   ),
-                  YaruTile(
-                    enabled: true,
+                  ListTile(
                     leading: const Icon(Icons.sort_by_alpha),
-                    trailing: Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Text(
-                        "sort_json_properties_alphabetically".tr(),
-                        style: const TextStyle(fontSize: 18),
-                      ),
-                    ),
-                     Switch(
+                    title: Text("sort_json_properties_alphabetically".tr()),
+                    trailing: Switch(
                       value: ref.watch(sortAlphabeticallyProvider),
                       onChanged: (value) => ref
                           .read(sortAlphabeticallyProvider.notifier)
                           .state = value,
                     ),
                   )
-                ]),
+                ],
+              ),
+            ),
           ),
-          SizedBox(
-              height: MediaQuery.of(context).size.height / 1.2,
-              child: IOEditor(
-                inputController: inputController,
-                outputController: outputController,
-              )),
+          IOEditor(
+            inputController: inputController,
+            outputController: outputController,
+            singleScroll: true,
+            useExpansionPanels: true,
+            inputInitiallyExpanded: true,
+            outputInitiallyExpanded: true,
+          ),
         ],
       ),
     );

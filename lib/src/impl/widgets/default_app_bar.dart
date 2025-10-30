@@ -19,7 +19,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
         leading: responsive.ResponsiveVisibility(
-          hiddenWhen: const [
+          hiddenConditions: const [
             responsive.Condition.smallerThan(name: 'TABLET_LARGE')
           ],
           replacement: Consumer(

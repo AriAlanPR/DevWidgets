@@ -42,38 +42,43 @@ class SqlFormatterPage extends HookConsumerWidget {
     return SizedBox(
       height: MediaQuery.of(context).size.height - kToolbarHeight,
       child: ListView(
+        physics: const ClampingScrollPhysics(),
+        primary: false,
+        shrinkWrap: true,
         children: [
           Container(
             margin: const EdgeInsets.all(8.0),
-            child: YaruSection(headline: "configuration".tr(), children: [
-              YaruTile(
-                enabled: true,
-                leading: const Icon(
-                  Icons.code,
-                  size: 25,
-                ),
-                trailing: Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: Text(
-                    "dialect".tr(),
-                    style: const TextStyle(fontSize: 18),
+            child: YaruSection(
+              headline: Text("configuration".tr()),
+              child: Column(
+                children: [
+                  ListTile(
+                    leading: const Icon(
+                      Icons.code,
+                      size: 25,
+                    ),
+                    title: Text("dialect".tr()),
+                    trailing: DropdownButton<SqlDialect>(
+                      value: ref.watch(sqlDialectProvider),
+                      items:
+                          getDropdownMenuItems<SqlDialect>(SqlDialect.values),
+                      onChanged: (selected) => ref
+                          .read(sqlDialectProvider.notifier)
+                          .state = selected!,
+                    ),
                   ),
-                ),
-                 DropdownButton<SqlDialect>(
-                    value: ref.watch(sqlDialectProvider),
-                    items: getDropdownMenuItems<SqlDialect>(SqlDialect.values),
-                    onChanged: (selected) => ref
-                        .read(sqlDialectProvider.notifier)
-                        .state = selected!),
+                ],
               ),
-            ]),
+            ),
           ),
-          SizedBox(
-              height: MediaQuery.of(context).size.height / 1.2,
-              child: IOEditor(
-                inputController: inputController,
-                outputController: outputController,
-              )),
+          IOEditor(
+            inputController: inputController,
+            outputController: outputController,
+            singleScroll: true,
+            useExpansionPanels: true,
+            inputInitiallyExpanded: true,
+            outputInitiallyExpanded: true,
+          ),
         ],
       ),
     );

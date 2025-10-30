@@ -29,83 +29,77 @@ class CpfCnpjGeneratorPage extends HookConsumerWidget {
           Container(
             margin: const EdgeInsets.all(8.0),
             child: YaruSection(
-                headline: Text(StringTranslateExtension("configuration").tr()),
+              headline: Text(StringTranslateExtension("configuration").tr()),
+              child: Column(
                 children: [
-                  YaruTile(
-                    enabled: true,
+                  ListTile(
                     leading: const Icon(Icons.more_horiz),
-                    trailing: Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: ListTile(title: Text("format".tr())),
-                    ),
-                     Switch(
-                      onChanged: (value) =>
-                          ref.read(isFormattedProvider.notifier).state = value,
+                    title: Text("format".tr()),
+                    trailing: Switch(
+                      onChanged: (value) => ref
+                          .read(isFormattedProvider.notifier)
+                          .state = value,
                       value: ref.watch(isFormattedProvider),
                     ),
                   ),
-                  YaruTile(
-                    enabled: true,
+                  ListTile(
                     leading: const Icon(Icons.format_list_numbered),
-                    trailing: Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: ListTile(
-                          title: Text(StringTranslateExtension("amount").tr())),
-                    ),
-                     Flexible(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Flexible(
-                            flex: 1,
-                            child: TextFormField(
-                              keyboardType: TextInputType.number,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly
-                              ],
-                              textAlign: TextAlign.end,
-                              initialValue:
-                                  ref.watch(amountProvider).toString(),
-                              onChanged: (value) {
-                                ref.read(amountProvider.notifier).state =
-                                    int.parse(value);
-                              },
-                              decoration: const InputDecoration(
-                                contentPadding: EdgeInsets.all(10),
-                                border: OutlineInputBorder(),
-                              ),
+                    title: Text(StringTranslateExtension("amount").tr()),
+                    trailing: Row(
+                      // Keep controls compact within available space
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        SizedBox(
+                          width: 100,
+                          child: TextFormField(
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                            textAlign: TextAlign.end,
+                            initialValue:
+                                ref.watch(amountProvider).toString(),
+                            onChanged: (value) {
+                              ref.read(amountProvider.notifier).state =
+                                  int.parse(value);
+                            },
+                            decoration: const InputDecoration(
+                              contentPadding: EdgeInsets.all(10),
+                              border: OutlineInputBorder(),
                             ),
                           ),
-                          const SizedBox(width: 8),
-                          Flexible(
-                            flex: 2,
-                            child: ElevatedButton(
-                              onPressed: () => ref
-                                  .read(cpfCnpjGeneratorProvider.notifier)
-                                  .generate(mode),
-                              child: Text(
-                                  StringTranslateExtension("generate").tr()),
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(width: 8),
+                        ElevatedButton(
+                          onPressed: () => ref
+                              .read(cpfCnpjGeneratorProvider.notifier)
+                              .generate(mode),
+                          child: Text(
+                              StringTranslateExtension("generate")
+                                  .tr()),
+                        ),
+                      ],
                     ),
                   ),
-                ]),
+                ],
+              ),
+            ),
           ),
           SizedBox(
-              height: MediaQuery.of(context).size.height / 1.2,
-              child: OutputEditor(
-                outputController: outputController,
-                usesCodeControllers: false,
-                actionButtons: [
-                  ElevatedButton.icon(
-                      icon: const Icon(Icons.clear),
-                      label: Text(StringTranslateExtension("clear").tr()),
-                      onPressed: () =>
-                          ref.read(cpfCnpjGeneratorProvider.notifier).clear())
-                ],
-              )),
+            height: MediaQuery.of(context).size.height / 1.2,
+            child: OutputEditor(
+              outputController: outputController,
+              usesCodeControllers: false,
+              actionButtons: [
+                ElevatedButton.icon(
+                    icon: const Icon(Icons.clear),
+                    label: Text(StringTranslateExtension("clear").tr()),
+                    onPressed: () =>
+                        ref.read(cpfCnpjGeneratorProvider.notifier).clear())
+              ],
+            ),
+          ),
         ],
       ),
     );

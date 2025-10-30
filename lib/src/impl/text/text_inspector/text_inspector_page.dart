@@ -93,7 +93,7 @@ class TextInspectorPage extends HookConsumerWidget {
                     ref.read(selectedCaseConvertionProvider.notifier).state =
                         CaseConvertion.originalText;
                   }),
-                  initialAreas: [Area(weight: 0.7), Area(weight: 0.3)],
+                  initialAreas: [Area(size: 0.7), Area(size: 0.3)],
                   usesCodeControllers: false,
                   outputChild: _TextData(
                       wordDistributionController: wordDistributionController,

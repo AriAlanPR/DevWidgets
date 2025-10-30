@@ -35,6 +35,8 @@ class OutputEditor extends StatelessWidget {
       visible: outputChild == null,
       replacement: outputChild ?? const SizedBox.shrink(),
       child: ListView(
+        physics: const ClampingScrollPhysics(),
+        primary: false,
         children: [
           outputController != null
               ? OutputToolbar(
@@ -44,9 +46,7 @@ class OutputEditor extends StatelessWidget {
                 )
               : const SizedBox.shrink(),
           Container(
-            width: isVerticalLayout
-                ? MediaQuery.of(context).size.width
-                : MediaQuery.of(context).size.width / 1.5,
+            width: width ?? double.infinity,
             margin: const EdgeInsets.all(8.0),
             height: isVerticalLayout
                 ? MediaQuery.of(context).size.height / 3.5

@@ -39,6 +39,6 @@ String applyWebSpaceFix(String string) {
   return string;
 }
 
-copyToClipboard(String text) async {
+Future<void> copyToClipboard(String text) async {
   await Clipboard.setData(ClipboardData(text: applyWebSpaceFix(text)));
 }

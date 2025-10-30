@@ -29,7 +29,7 @@ class CpfCnpjGeneratorPage extends HookConsumerWidget {
           Container(
             margin: const EdgeInsets.all(8.0),
             child: YaruSection(
-                headline: StringTranslateExtension("configuration").tr(),
+                headline: Text(StringTranslateExtension("configuration").tr()),
                 children: [
                   YaruTile(
                     enabled: true,
